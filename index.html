@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>LAB héritage | Conserver la beauté — Phục Dựng & Bảo Tồn Kiến Trúc</title>
+<meta name="description" content="LAB héritage — Giải pháp tổng thể phục dựng, phục chế di sản văn hoá, công trình kiến trúc, building, resort, villa, du thuyền và thời trang cao cấp. Hơn 10.000 vật phẩm đã xử lý. TP. Hồ Chí Minh."/>
+<meta name="keywords" content="phục hồi biệt thự cổ, bảo tồn kiến trúc resort, xử lý bề mặt đá cao cấp, phục dựng di sản, phục chế villa, LAB heritage"/>
+<link rel="icon" href="images/logo.svg" type="image/svg+xml"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link rel="stylesheet" href="css/style.css"/>
+</head>
+<body>
+
+<!-- ═══ NAVBAR ═══ -->
+<nav id="nav">
+  <a href="#" class="nav-logo">
+    <img src="images/logo.svg" alt="LAB héritage logo"/>
+    <div class="nav-logo-text">
+      <div class="brand">LAB <b>héritage</b></div>
+      <div class="tagline">Conserver la beauté</div>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#about">Về Chúng Tôi</a></li>
+    <li><a href="#services">Dịch Vụ</a></li>
+    <li><a href="#projects">Dự Án</a></li>
+    <li><a href="#partners">Đối Tác</a></li>
+    <li><a href="#insights">Kiến Thức</a></li>
+    <li><a href="#contact">Liên Hệ</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Đặt Lịch Khảo Sát</a>
+  <button class="hamburger" id="ham" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- Mobile nav overlay -->
+<div class="mob-nav" id="mobNav">
+  <a href="#about">Về Chúng Tôi</a>
+  <a href="#services">Dịch Vụ</a>
+  <a href="#projects">Dự Án</a>
+  <a href="#partners">Đối Tác</a>
+  <a href="#insights">Kiến Thức</a>
+  <a href="#contact">Liên Hệ</a>
+  <a href="#contact" class="btn-primary" style="margin-top:12px">Đặt Lịch Khảo Sát</a>
+</div>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero" id="hero" style="padding:0"></section>
+
+<!-- ═══ BEFORE / AFTER ═══ -->
+<section class="ba-section" id="ba-section" style="padding-top:100px;padding-bottom:100px"></section>
+
+<!-- ═══ VỀ CHÚNG TÔI ═══ -->
+<section class="about-section" id="about-section" id="about"></section>
+
+<!-- ═══ DỊCH VỤ ═══ -->
+<section class="services-section" id="services">
+  <div class="svc-hd reveal">
+    <div class="label center">Giải Pháp Toàn Diện</div>
+    <h2 class="headline" style="text-align:center;margin-top:16px">Bốn Lĩnh Vực<br/><em>Chuyên Biệt</em></h2>
+  </div>
+  <div id="svc-grid" class="svc-grid"></div>
+</section>
+
+<!-- ═══ QUY TRÌNH ═══ -->
+<section class="process-section" id="process">
+  <div class="proc-hd reveal">
+    <div class="label center">Quy Trình Làm Việc</div>
+    <h2 class="headline" style="text-align:center;margin-top:16px">Bốn Bước<br/><em>Chuẩn Quốc Tế</em></h2>
+  </div>
+  <div id="proc-grid" class="proc-grid"></div>
+</section>
+
+<!-- ═══ DỰ ÁN ═══ -->
+<section class="projects-section" id="projects">
+  <div class="proj-hd reveal">
+    <div>
+      <div class="label">Danh Mục Dự Án</div>
+      <h2 class="headline" style="margin-top:16px">Công Trình<br/><em>Tiêu Biểu</em></h2>
+    </div>
+    <a href="#contact" class="btn-outline">Tư Vấn Dự Án →</a>
+  </div>
+  <div class="proj-filters reveal">
+    <button class="pf on" data-f="all">Tất Cả</button>
+    <button class="pf" data-f="di-san">Di Sản</button>
+    <button class="pf" data-f="resort-villa">Resort &amp; Villa</button>
+    <button class="pf" data-f="du-thuyen">Du Thuyền &amp; Xe</button>
+    <button class="pf" data-f="thoi-trang">Thời Trang</button>
+  </div>
+  <div id="proj-grid" class="proj-grid"></div>
+</section>
+
+<!-- ═══ MINH CHỨNG ═══ -->
+<section class="proof-section" id="proof-section"></section>
+
+<!-- ═══ ĐỐI TÁC ═══ -->
+<section class="partners-section" id="partners">
+  <div class="partners-hd reveal">
+    <div class="label center">Đối Tác &amp; Khách Hàng</div>
+    <h2 class="headline" style="text-align:center;margin-top:16px">Mang Giá Trị Đến<br/><em>Những Thương Hiệu Lớn</em></h2>
+  </div>
+  <div id="prt-grid" class="prt-grid reveal"></div>
+  <p id="prt-note" class="prt-note reveal"></p>
+</section>
+
+<!-- ═══ CTA BANNER ═══ -->
+<div id="cta-banner" class="cta-banner reveal"></div>
+
+<!-- ═══ TIÊU CHUẨN & SẢN PHẨM ═══ -->
+<section class="standards-section" id="standards">
+  <div class="std-grid">
+    <div class="reveal">
+      <div class="label" style="margin-bottom:20px">Tiêu Chuẩn Đánh Giá</div>
+      <h2 class="headline" style="margin-bottom:8px">Chuẩn Mực<br/><em>Quốc Tế</em></h2>
+      <p style="font-size:15px;line-height:1.85;color:var(--muted);margin-bottom:8px">Mọi dự án đều được đánh giá và lấy mẫu theo tiêu chuẩn quốc tế trước khi thi công:</p>
+      <div id="std-list" class="std-list"></div>
+    </div>
+    <div class="reveal delay1">
+      <div class="label" style="margin-bottom:20px">Sản Phẩm Sử Dụng</div>
+      <h2 class="headline" style="margin-bottom:24px">100% Nguồn Gốc<br/><em>Châu Âu</em></h2>
+      <div id="brand-cards"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ KIẾN THỨC ═══ -->
+<section class="insights-section" id="insights">
+  <div style="margin-bottom:48px" class="reveal">
+    <div class="label">Kiến Thức &amp; Tư Liệu</div>
+    <h2 class="headline" style="margin-top:16px">Góc<br/><em>Chuyên Gia</em></h2>
+  </div>
+  <div id="ins-grid" class="ins-grid"></div>
+</section>
+
+<!-- ═══ LIÊN HỆ ═══ -->
+<section class="contact-section" id="contact">
+  <div id="contact-info" class="reveal"></div>
+  <div id="contact-form" class="reveal delay1"></div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="ft-inner" id="ft-inner"></div>
+</footer>
+
+<!-- ═══ ZALO BUTTON ═══ -->
+<a href="#" class="zalo-btn" target="_blank" title="Chat Zalo với LAB héritage">
+  <div class="z-tip">Chat Zalo · Mr. Tú Đỗ - Leader PM LAB héritage</div>
+  <img src="/images/logo-zalo.webp" alt="Zalo Logo" 
+  style="
+      width: 32px;  
+      height: 32px;
+      display: block;
+      object-fit: contain;"
+    >
+  <!-- <svg viewBox="0 0 32 32" xmlns="https://page.widget.zalo.me/static/images/2.0/Logo.svg">
+    <path d="M16 2C8.268 2 2 8.044 2 15.5c0 3.875 1.672 7.368 4.344 9.875L5.25 29.5l4.5-1.438C11.312 28.996 13.625 29.5 16 29.5c7.732 0 14-6.044 14-13.5S23.732 2 16 2zm-4.594 8.313h6.25l-5.875 7.5h5.875v1.874h-6.625l5.875-7.5h-5.5v-1.874zm10.219 9.374a.94.94 0 01-.938.938.94.94 0 01-.937-.938.94.94 0 01.938-.937.94.94 0 01.937.937zm-2.188-4.937c0 1.024-.832 1.875-1.875 1.875h-1.25v1.875h-1.25V12.75h2.5c1.043 0 1.875.832 1.875 1.875v.125zm-1.25 0v-.125a.625.625 0 00-.625-.625h-1.25v1.375h1.25a.625.625 0 00.625-.625z"/>
+  </svg> -->
+</a>
+
+
+<!-- Scripts: data trước, app sau -->
+<script src="data/content.js"></script>
+<script src="js/app.js"></script>
+
+</body>
+</html>
