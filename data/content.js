@@ -23,7 +23,7 @@ const DATA = {
     slogan:    "Di Sản · Kiến Trúc · Du Thuyền & Ô Tô · Thời Trang Cao Cấp",
     phone:     "+84 862043042",
     contact:   "Mr. Tú Đỗ - PM LAB hé riatage",
-    email:     "info@labheritage.com.vn",
+    email:     "dotrongthientu@labheritage.com.vn",
     address:   "37/20 Nguyễn Minh Hoàng, Phường Bảy Hiền, TP. Hồ Chí Minh",
     workshop:  "Củ Chi, TP. Hồ Chí Minh — 2.000m²",
     zalo:      "https://zalo.me/0862043042",
