@@ -517,7 +517,7 @@ function renderFooter() {
       <a href="#insights" id="ftl-insights" data-vi="${L.nav_insights_vi}" data-en="${L.nav_insights_en}">${L.nav_insights_vi}</a>
       <a href="#contact"  id="ftl-contact"  data-vi="${L.nav_contact_vi}"  data-en="${L.nav_contact_en}">${L.nav_contact_vi}</a>
     </div>
-    <div class="ft-copy">© 2026 LAB héritage · Design by SyQy.dev </div>
+    <div class="ft-copy">© 2026 LAB héritage · Design by SyQy.dev          &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; .&nbsp;</div>
   `;
   const zBtn = document.querySelector('.zalo-btn');
   if (zBtn) zBtn.href = c.zalo;
