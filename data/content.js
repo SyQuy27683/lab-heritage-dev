@@ -145,7 +145,7 @@ const DATA = {
      BEFORE / AFTER SLIDER
   ───────────────────────────────────────────────────────────── */
   before_after: {
-    img_before: "images/du-an-1.jpg", img_after: "images/du-an-1.jpg",
+    img_before: "images/du-an-1.jpg", img_after: "images/du-an-1a.png",
     label_before: "Trước Phục Chế", label_before_en: "Before",
     label_after:  "Sau Phục Chế",   label_after_en:  "After",
   },
