@@ -1,170 +1,405 @@
 <!DOCTYPE html>
+<!--
+  ╔══════════════════════════════════════════════════════════════╗
+  ║  LAB héritage — index.html                                  ║
+  ║  Cấu trúc chính của trang:                                  ║
+  ║  header · hero · dự án tiêu biểu · câu chuyện minh chứng  ║
+  ║  form liên hệ · footer                                      ║
+  ║                                                              ║
+  ║  Song ngữ Vi/En qua data-vi / data-en attributes            ║
+  ║  Nội dung động render từ data/content.js qua js/app.js      ║
+  ╚══════════════════════════════════════════════════════════════╝
+-->
 <html lang="vi">
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>LAB héritage | Conserver la beauté — Phục Dựng & Bảo Tồn Kiến Trúc</title>
-<meta name="description" content="LAB héritage — Giải pháp tổng thể phục dựng, phục chế di sản văn hoá, công trình kiến trúc, building, resort, villa, du thuyền và thời trang cao cấp. Hơn 10.000 vật phẩm đã xử lý. TP. Hồ Chí Minh."/>
-<meta name="keywords" content="phục hồi biệt thự cổ, bảo tồn kiến trúc resort, xử lý bề mặt đá cao cấp, phục dựng di sản, phục chế villa, LAB heritage"/>
+<title>LAB héritage | Conserver la beauté </title>
+<meta name="description" content="LAB héritage — Giải pháp tổng thể phục dựng, phục chế di sản văn hoá, công trình kiến trúc, resort, villa, du thuyền và thời trang cao cấp."/>
+
+<!-- ═══ FAVICON & LOGO ═══
+     Đặt file logo.png vào thư mục images/
+     Ưu tiên PNG cho favicon; SVG dùng làm logo navbar -->
+<link rel="icon" href="images/logo1.png" type="image/png"/>
 <link rel="icon" href="images/logo.svg" type="image/svg+xml"/>
+<link rel="icon" href="images/favicon.ico" sizes="any"/>
+<link rel="apple-touch-icon" href="images/logo-lab.png"/>
+<meta name="theme-color" content="#0a0906"/>
+
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link rel="stylesheet" href="css/style.css"/>
 </head>
 <body>
 
-<!-- ═══ NAVBAR ═══ -->
+<!-- ═══════════════════════════════════════════════════════════
+     NAVBAR
+     Logo: images/logo.png (PNG) + text fallback
+     Ngôn ngữ: nút VI/EN được inject bởi js/enhance.js
+     ═══════════════════════════════════════════════════════════ -->
 <nav id="nav">
+  <!-- LOGO — thay logo.png bằng file thực tế của bạn -->
   <a href="#" class="nav-logo">
-    <img src="images/logo.svg" alt="LAB héritage logo"/>
+    <img src="images/logo.png"
+         alt="LAB héritage logo"
+         onerror="this.onerror=null;this.src='images/logo.svg'"/>
     <div class="nav-logo-text">
       <div class="brand">LAB <b>héritage</b></div>
-      <div class="tagline">Conserver la beauté</div>
+      <div class="tagline" data-vi="Conserver la beauté" data-en="Conserver la beauté">Conserver la beauté</div>
     </div>
   </a>
-  <ul class="nav-links">
-    <li><a href="#about">Về Chúng Tôi</a></li>
-    <li><a href="#services">Dịch Vụ</a></li>
-    <li><a href="#projects">Dự Án</a></li>
-    <li><a href="#partners">Đối Tác</a></li>
-    <li><a href="#insights">Kiến Thức</a></li>
-    <li><a href="#contact">Liên Hệ</a></li>
+
+  <!-- Desktop nav links — text được dịch qua js/enhance.js -->
+  <ul class="nav-links" id="nav-links">
+    <li><a href="#about"    data-vi="Về Chúng Tôi" data-en="About Us">Về Chúng Tôi</a></li>
+    <li><a href="#services" data-vi="Dịch Vụ"      data-en="Services">Dịch Vụ</a></li>
+    <li><a href="#projects" data-vi="Dự Án"         data-en="Projects">Dự Án</a></li>
+    <li><a href="#partners" data-vi="Đối Tác"       data-en="Partners">Đối Tác</a></li>
+    <li><a href="#insights" data-vi="Kiến Thức"     data-en="Insights">Kiến Thức</a></li>
+    <li><a href="#contact"  data-vi="Liên Hệ"       data-en="Contact">Liên Hệ</a></li>
   </ul>
-  <a href="#contact" class="nav-cta">Đặt Lịch Khảo Sát</a>
+
+  <a href="#contact" class="nav-cta" data-vi="Đặt Lịch Khảo Sát" data-en="Book Inspection">Đặt Lịch Khảo Sát</a>
+
+  <!-- Hamburger mobile menu -->
   <button class="hamburger" id="ham" aria-label="Menu">
     <span></span><span></span><span></span>
   </button>
+  <!-- Nút VI/EN được inject bởi enhance.js ngay trước nút hamburger -->
 </nav>
 
 <!-- Mobile nav overlay -->
 <div class="mob-nav" id="mobNav">
-  <a href="#about">Về Chúng Tôi</a>
-  <a href="#services">Dịch Vụ</a>
-  <a href="#projects">Dự Án</a>
-  <a href="#partners">Đối Tác</a>
-  <a href="#insights">Kiến Thức</a>
-  <a href="#contact">Liên Hệ</a>
-  <a href="#contact" class="btn-primary" style="margin-top:12px">Đặt Lịch Khảo Sát</a>
+  <a href="#about"    data-vi="Về Chúng Tôi" data-en="About Us">Về Chúng Tôi</a>
+  <a href="#services" data-vi="Dịch Vụ"      data-en="Services">Dịch Vụ</a>
+  <a href="#projects" data-vi="Dự Án"         data-en="Projects">Dự Án</a>
+  <a href="#partners" data-vi="Đối Tác"       data-en="Partners">Đối Tác</a>
+  <a href="#insights" data-vi="Kiến Thức"     data-en="Insights">Kiến Thức</a>
+  <a href="#contact"  data-vi="Liên Hệ"       data-en="Contact">Liên Hệ</a>
+  <a href="#contact" class="btn-primary" style="margin-top:12px"
+     data-vi="Đặt Lịch Khảo Sát" data-en="Book Inspection">Đặt Lịch Khảo Sát</a>
+  <!-- Nút VI/EN mobile được inject bởi enhance.js -->
 </div>
 
-<!-- ═══ HERO ═══ -->
+<!-- ═══════════════════════════════════════════════════════════
+     HERO — nội dung render từ DATA.hero trong content.js
+     ═══════════════════════════════════════════════════════════ -->
 <section class="hero" id="hero" style="padding:0"></section>
 
-<!-- ═══ BEFORE / AFTER ═══ -->
+<!-- ═══════════════════════════════════════════════════════════
+     BEFORE / AFTER SLIDER
+     ═══════════════════════════════════════════════════════════ -->
 <section class="ba-section" id="ba-section" style="padding-top:100px;padding-bottom:100px"></section>
 
-<!-- ═══ VỀ CHÚNG TÔI ═══ -->
-<section class="about-section" id="about-section" id="about"></section>
+<!-- ═══════════════════════════════════════════════════════════
+     VỀ CHÚNG TÔI — render từ DATA.about
+     ═══════════════════════════════════════════════════════════ -->
+<!-- <section class="about-section" id="about-section" id="about"></section> -->
+<section class="about-section" id="about"></section>
 
-<!-- ═══ DỊCH VỤ ═══ -->
+<!-- ═══════════════════════════════════════════════════════════
+     DỊCH VỤ — heading tĩnh, cards render từ DATA.services
+     ═══════════════════════════════════════════════════════════ -->
 <section class="services-section" id="services">
   <div class="svc-hd reveal">
-    <div class="label center">Giải Pháp Toàn Diện</div>
-    <h2 class="headline" style="text-align:center;margin-top:16px">Bốn Lĩnh Vực<br/><em>Chuyên Biệt</em></h2>
+    <div class="label center"
+         id="svc-label"
+         data-vi="Giải Pháp Toàn Diện"
+         data-en="Complete Solutions">Giải Pháp Toàn Diện</div>
+    <h2 class="headline" id="svc-h2" style="text-align:center;margin-top:16px">
+      <span data-vi="Bốn Lĩnh Vực" data-en="Four Specialist">Bốn Lĩnh Vực</span><br/>
+      <em data-vi="Chuyên Biệt" data-en="Fields">Chuyên Biệt</em>
+    </h2>
   </div>
   <div id="svc-grid" class="svc-grid"></div>
 </section>
 
-<!-- ═══ QUY TRÌNH ═══ -->
+<!-- ═══════════════════════════════════════════════════════════
+     QUY TRÌNH — heading tĩnh, steps render từ DATA.process
+     ═══════════════════════════════════════════════════════════ -->
 <section class="process-section" id="process">
   <div class="proc-hd reveal">
-    <div class="label center">Quy Trình Làm Việc</div>
-    <h2 class="headline" style="text-align:center;margin-top:16px">Bốn Bước<br/><em>Chuẩn Quốc Tế</em></h2>
+    <div class="label center"
+         id="proc-label"
+         data-vi="Quy Trình Làm Việc"
+         data-en="Our Process">Quy Trình Làm Việc</div>
+    <h2 class="headline" id="proc-h2" style="text-align:center;margin-top:16px">
+      <span data-vi="Bốn Bước" data-en="Four Steps">Bốn Bước</span><br/>
+      <em data-vi="Chuẩn Quốc Tế" data-en="International Standards">Chuẩn Quốc Tế</em>
+    </h2>
   </div>
   <div id="proc-grid" class="proc-grid"></div>
 </section>
 
-<!-- ═══ DỰ ÁN ═══ -->
+<!-- ═══════════════════════════════════════════════════════════
+     DỰ ÁN TIÊU BIỂU — heading + filters tĩnh, cards động
+     ═══════════════════════════════════════════════════════════ -->
 <section class="projects-section" id="projects">
   <div class="proj-hd reveal">
     <div>
-      <div class="label">Danh Mục Dự Án</div>
-      <h2 class="headline" style="margin-top:16px">Công Trình<br/><em>Tiêu Biểu</em></h2>
+      <div class="label"
+           id="proj-label"
+           data-vi="Danh Mục Dự Án"
+           data-en="Project Portfolio">Danh Mục Dự Án</div>
+      <h2 class="headline" id="proj-h2" style="margin-top:16px">
+        <span data-vi="Công Trình" data-en="Featured">Công Trình</span><br/>
+        <em data-vi="Tiêu Biểu" data-en="Projects">Tiêu Biểu</em>
+      </h2>
     </div>
-    <a href="#contact" class="btn-outline">Tư Vấn Dự Án →</a>
+    <a href="#contact" class="btn-outline" id="proj-cta"
+       data-vi="Tư Vấn Dự Án →" data-en="Project Consultation →">Tư Vấn Dự Án →</a>
   </div>
+
+  <!-- Filter buttons — data-filter dùng cho song ngữ, data-f dùng cho filter logic -->
   <div class="proj-filters reveal">
-    <button class="pf on" data-f="all">Tất Cả</button>
-    <button class="pf" data-f="di-san">Di Sản</button>
-    <button class="pf" data-f="resort-villa">Resort &amp; Villa</button>
-    <button class="pf" data-f="du-thuyen">Du Thuyền &amp; Xe</button>
-    <button class="pf" data-f="thoi-trang">Thời Trang</button>
+    <button class="pf on" data-f="all"          data-filter="all"          data-vi="Tất Cả"        data-en="All">Tất Cả</button>
+    <button class="pf"    data-f="di-san"        data-filter="di-san"        data-vi="Di Sản"        data-en="Heritage">Di Sản</button>
+    <button class="pf"    data-f="resort-villa"  data-filter="resort-villa"  data-vi="Resort &amp; Villa" data-en="Resort &amp; Villa">Resort &amp; Villa</button>
+    <button class="pf"    data-f="du-thuyen"     data-filter="du-thuyen"     data-vi="Du Thuyền &amp; Xe" data-en="Yacht &amp; Auto">Du Thuyền &amp; Xe</button>
+    <button class="pf"    data-f="thoi-trang"    data-filter="thoi-trang"    data-vi="Thời Trang"    data-en="Fashion">Thời Trang</button>
   </div>
   <div id="proj-grid" class="proj-grid"></div>
 </section>
 
-<!-- ═══ MINH CHỨNG ═══ -->
+<!-- ═══════════════════════════════════════════════════════════
+     MINH CHỨNG: ALMA F.R.C. — render từ DATA.proof
+     ═══════════════════════════════════════════════════════════ -->
 <section class="proof-section" id="proof-section"></section>
 
-<!-- ═══ ĐỐI TÁC ═══ -->
+<!-- ═══════════════════════════════════════════════════════════
+     CÂU CHUYỆN MINH CHỨNG: KEIM & NHÀ TRẮNG
+     Tất cả text song ngữ qua data-vi / data-en
+     ═══════════════════════════════════════════════════════════ -->
+     <section class="whitehouse-section" id="whitehouse">
+      <div class="wh-inner">
+        <!-- Cột trái: hình ảnh + badge -->
+        <div class="wh-visual reveal">
+          <div class="wh-img-wrap">
+            <div class="wh-img-ph">
+              <span>🏛️</span>
+              Thay ảnh thực tế: <img src="images/white-house.jpg" alt="White House KEIM">
+              <p class="wh-ph-label"
+                 data-vi="Nhà Trắng — Washington D.C., Hoa Kỳ"
+                 data-en="The White House — Washington D.C., USA">Nhà Trắng — Washington D.C., Hoa Kỳ</p>
+            </div>
+          </div>
+          <div class="wh-badge reveal delay1">
+            <div class="wh-badge-logo">KEIM</div>
+            <div class="wh-badge-text">
+              <span data-vi="Tin tưởng bởi" data-en="Trusted by">Tin tưởng bởi</span><br/>
+              <strong data-vi="Nhà Trắng, Hoa Kỳ" data-en="The White House, USA">Nhà Trắng, Hoa Kỳ</strong>
+            </div>
+          </div>
+        </div>
+    
+        <!-- Cột phải: nội dung câu chuyện -->
+        <div class="wh-content reveal delay1">
+          <div class="label" style="margin-bottom:20px">
+            <span data-vi="Câu Chuyện Minh Chứng" data-en="Proof Story">Câu Chuyện Minh Chứng</span>
+          </div>
+          <h2 class="headline" style="margin-bottom:6px">
+            <span data-vi="Tập Đoàn KEIM &" data-en="KEIM Group &">Tập Đoàn KEIM &</span><br/>
+            <em data-vi="Nhà Trắng, Hoa Kỳ" data-en="The White House, USA">Nhà Trắng, Hoa Kỳ</em>
+          </h2>
+          <div class="wh-subtitle"
+               data-vi="White House · Washington D.C. · USA"
+               data-en="White House · Washington D.C. · USA">White House · Washington D.C. · USA</div>
+    
+          <div class="wh-block">
+            <div class="wh-block-icon">🏛️</div>
+            <div>
+              <div class="wh-block-title"
+                   data-vi="Bối Cảnh & Thách Thức"
+                   data-en="Context & Challenge">Bối Cảnh & Thách Thức</div>
+              <p class="wh-block-body"
+                 data-vi="Nhà Trắng — dinh thự lịch sử hơn 200 năm tuổi và là biểu tượng quyền lực của nước Mỹ — đòi hỏi vật liệu bảo trì đặc biệt khắt khe: phải đảm bảo tính thẩm mỹ lịch sử (màu trắng đặc trưng), an toàn tuyệt đối với môi trường và sức khoẻ con người, không bong tróc hay ố vàng theo thời gian, đồng thời cho phép thoát hơi ẩm tự nhiên để bảo vệ cấu trúc đá vôi và gạch cổ bên trong."
+                 data-en="The White House — a historic mansion over 200 years old and symbol of American power — demands extraordinarily strict maintenance materials: preserving its iconic white aesthetic, being completely safe for both environment and human health, not peeling or yellowing over time, while allowing natural moisture vapor transmission to protect the historic limestone and brick structure beneath.">
+                Nhà Trắng — dinh thự lịch sử hơn 200 năm tuổi và là biểu tượng quyền lực của nước Mỹ — đòi hỏi vật liệu bảo trì đặc biệt khắt khe: phải đảm bảo tính thẩm mỹ lịch sử (màu trắng đặc trưng), an toàn tuyệt đối với môi trường và sức khoẻ con người, không bong tróc hay ố vàng theo thời gian, đồng thời cho phép thoát hơi ẩm tự nhiên để bảo vệ cấu trúc đá vôi và gạch cổ bên trong.
+              </p>
+            </div>
+          </div>
+    
+          <div class="wh-block">
+            <div class="wh-block-icon">✨</div>
+            <div>
+              <div class="wh-block-title"
+                   data-vi="Giải Pháp Của KEIM"
+                   data-en="KEIM's Solution">Giải Pháp Của KEIM</div>
+              <p class="wh-block-body"
+                 data-vi="Tập đoàn KEIM cung cấp hệ sơn khoáng silicate thuần khiết — công nghệ được phát triển từ năm 1878 bởi Adolf Wilhelm Keim tại Đức. Sơn khoáng KEIM không tạo màng nổi trên bề mặt mà thẩm thấu và liên kết hóa học (silification) trực tiếp vào cấu trúc khoáng của đá và vữa, tạo thành một khối thống nhất bền vĩnh cửu. Màu sắc ổn định hoàn hảo dưới tia UV, không bao giờ bong tróc, thoáng khí tuyệt đối và hoàn toàn vô hại với môi trường."
+                 data-en="KEIM Group supplied pure silicate mineral paint — a technology developed since 1878 by Adolf Wilhelm Keim in Germany. KEIM mineral paint does not form a surface film; instead, it penetrates and chemically bonds (silification) directly into the mineral structure of the stone and mortar, forming a permanently unified matrix. The color remains perfectly stable under UV radiation, never peels, is completely breathable, and entirely harmless to the environment.">
+                Tập đoàn KEIM cung cấp hệ sơn khoáng silicate thuần khiết — công nghệ được phát triển từ năm 1878 bởi Adolf Wilhelm Keim tại Đức. Sơn khoáng KEIM không tạo màng nổi trên bề mặt mà thẩm thấu và liên kết hóa học (silification) trực tiếp vào cấu trúc khoáng của đá và vữa, tạo thành một khối thống nhất bền vĩnh cửu. Màu sắc ổn định hoàn hảo dưới tia UV, không bao giờ bong tróc, thoáng khí tuyệt đối và hoàn toàn vô hại với môi trường.
+              </p>
+            </div>
+          </div>
+    
+          <div class="wh-block">
+            <div class="wh-block-icon">🏆</div>
+            <div>
+              <div class="wh-block-title"
+                   data-vi="Kết Quả & Niềm Tin"
+                   data-en="Results & Trust">Kết Quả & Niềm Tin</div>
+              <p class="wh-block-body"
+                 data-vi="Nhà Trắng duy trì vẻ đẹp trắng sáng, uy nghi sau nhiều chu kỳ bảo trì với sơn khoáng KEIM — không một vết ố, không bong tróc, không gây hại cho cấu trúc lịch sử. Đây là minh chứng hùng hồn nhất cho triết lý bảo tồn của KEIM: bảo vệ vẻ đẹp nguyên bản mà không để lại dấu vết can thiệp. Chính sự tin tưởng này là nền tảng để LAB héritage lựa chọn KEIM là đối tác công nghệ chiến lược tại Việt Nam."
+                 data-en="The White House maintains its brilliant, majestic white appearance through multiple maintenance cycles with KEIM mineral paint — no staining, no peeling, no harm to the historic structure. This stands as the most powerful testament to KEIM's conservation philosophy: protecting original beauty without leaving any trace of intervention. This trust is the very foundation upon which LAB héritage selected KEIM as its strategic technology partner in Vietnam.">
+                Nhà Trắng duy trì vẻ đẹp trắng sáng, uy nghi sau nhiều chu kỳ bảo trì với sơn khoáng KEIM — không một vết ố, không bong tróc, không gây hại cho cấu trúc lịch sử. Đây là minh chứng hùng hồn nhất cho triết lý bảo tồn của KEIM: bảo vệ vẻ đẹp nguyên bản mà không để lại dấu vết can thiệp. Chính sự tin tưởng này là nền tảng để LAB héritage lựa chọn KEIM là đối tác công nghệ chiến lược tại Việt Nam.
+              </p>
+            </div>
+          </div>
+    
+          <div class="wh-facts">
+            <div class="wh-fact">
+              <div class="wh-fact-num">1878</div>
+              <div class="wh-fact-lbl" data-vi="Năm sáng lập KEIM" data-en="KEIM founded">Năm sáng lập KEIM</div>
+            </div>
+            <div class="wh-fact">
+              <div class="wh-fact-num">145+</div>
+              <div class="wh-fact-lbl" data-vi="Năm lịch sử" data-en="Years of history">Năm lịch sử</div>
+            </div>
+            <div class="wh-fact">
+              <div class="wh-fact-num">0</div>
+              <div class="wh-fact-lbl" data-vi="VOC — An toàn tuyệt đối" data-en="VOC — Absolutely safe">VOC — An toàn tuyệt đối</div>
+            </div>
+            <div class="wh-fact">
+              <div class="wh-fact-num">∞</div>
+              <div class="wh-fact-lbl" data-vi="Bền màu — không bong tróc" data-en="Colorfast — never peels">Bền màu — không bong tróc</div>
+            </div>
+          </div>
+    
+          <blockquote class="wh-quote">
+            <span data-vi='"Nếu đủ tốt cho Nhà Trắng, đủ tốt cho di sản của bạn."'
+                  data-en='"If it is good enough for the White House, it is good enough for your heritage."'>"Nếu đủ tốt cho Nhà Trắng, đủ tốt cho di sản của bạn."</span>
+          </blockquote>
+        </div>
+      </div>
+    </section>
+<!-- ═══════════════════════════════════════════════════════════
+     ĐỐI TÁC & KHÁCH HÀNG
+     ═══════════════════════════════════════════════════════════ -->
 <section class="partners-section" id="partners">
   <div class="partners-hd reveal">
-    <div class="label center">Đối Tác &amp; Khách Hàng</div>
-    <h2 class="headline" style="text-align:center;margin-top:16px">Mang Giá Trị Đến<br/><em>Những Thương Hiệu Lớn</em></h2>
+    <div class="label center"
+         data-vi="Đối Tác &amp; Khách Hàng"
+         data-en="Partners &amp; Clients">Đối Tác &amp; Khách Hàng</div>
+    <h2 class="headline" id="prt-h2" style="text-align:center;margin-top:16px">
+      <span data-vi="Mang Giá Trị Đến" data-en="Delivering Value To">Mang Giá Trị Đến</span><br/>
+      <em data-vi="Những Thương Hiệu Lớn" data-en="Leading Brands">Những Thương Hiệu Lớn</em>
+    </h2>
   </div>
   <div id="prt-grid" class="prt-grid reveal"></div>
   <p id="prt-note" class="prt-note reveal"></p>
 </section>
 
-<!-- ═══ CTA BANNER ═══ -->
+<!-- CTA Banner -->
 <div id="cta-banner" class="cta-banner reveal"></div>
 
-<!-- ═══ TIÊU CHUẨN & SẢN PHẨM ═══ -->
+<!-- ═══════════════════════════════════════════════════════════
+     TIÊU CHUẨN & SẢN PHẨM
+     ═══════════════════════════════════════════════════════════ -->
 <section class="standards-section" id="standards">
   <div class="std-grid">
     <div class="reveal">
-      <div class="label" style="margin-bottom:20px">Tiêu Chuẩn Đánh Giá</div>
-      <h2 class="headline" style="margin-bottom:8px">Chuẩn Mực<br/><em>Quốc Tế</em></h2>
-      <p style="font-size:15px;line-height:1.85;color:var(--muted);margin-bottom:8px">Mọi dự án đều được đánh giá và lấy mẫu theo tiêu chuẩn quốc tế trước khi thi công:</p>
+      <div class="label" style="margin-bottom:20px"
+           data-vi="Tiêu Chuẩn Đánh Giá"
+           data-en="Assessment Standards">Tiêu Chuẩn Đánh Giá</div>
+      <h2 class="headline" style="margin-bottom:8px">
+        <span data-vi="Chuẩn Mực" data-en="International">Chuẩn Mực</span><br/>
+        <em data-vi="Quốc Tế" data-en="Standards">Quốc Tế</em>
+      </h2>
+      <p id="std-intro" style="font-size:15px;line-height:1.85;color:var(--muted);margin-bottom:8px"
+         data-vi="Mọi dự án đều được đánh giá và lấy mẫu theo tiêu chuẩn quốc tế trước khi thi công:"
+         data-en="All projects are assessed and sampled to international standards before execution:">
+        Mọi dự án đều được đánh giá và lấy mẫu theo tiêu chuẩn quốc tế trước khi thi công:
+      </p>
       <div id="std-list" class="std-list"></div>
     </div>
     <div class="reveal delay1">
-      <div class="label" style="margin-bottom:20px">Sản Phẩm Sử Dụng</div>
-      <h2 class="headline" style="margin-bottom:24px">100% Nguồn Gốc<br/><em>Châu Âu</em></h2>
+      <div class="label" style="margin-bottom:20px"
+           data-vi="Sản Phẩm Sử Dụng"
+           data-en="Products Used">Sản Phẩm Sử Dụng</div>
+      <h2 class="headline" style="margin-bottom:24px">
+        <span data-vi="100% Nguồn Gốc" data-en="100% European">100% Nguồn Gốc</span><br/>
+        <em data-vi="Châu Âu" data-en="Origin">Châu Âu</em>
+      </h2>
       <div id="brand-cards"></div>
     </div>
   </div>
 </section>
 
-<!-- ═══ KIẾN THỨC ═══ -->
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     KIẾN THỨC & TƯ LIỆU
+     ═══════════════════════════════════════════════════════════ -->
 <section class="insights-section" id="insights">
   <div style="margin-bottom:48px" class="reveal">
-    <div class="label">Kiến Thức &amp; Tư Liệu</div>
-    <h2 class="headline" style="margin-top:16px">Góc<br/><em>Chuyên Gia</em></h2>
+    <div class="label"
+         data-vi="Kiến Thức &amp; Tư Liệu"
+         data-en="Knowledge &amp; Resources">Kiến Thức &amp; Tư Liệu</div>
+    <h2 class="headline" style="margin-top:16px">
+      <span data-vi="Góc" data-en="Corner">Góc</span><br/>
+      <em data-vi="Chuyên Gia" data-en="Expert">Chuyên Gia</em>
+    </h2>
   </div>
   <div id="ins-grid" class="ins-grid"></div>
 </section>
 
-<!-- ═══ LIÊN HỆ ═══ -->
+<!-- ═══════════════════════════════════════════════════════════
+     LIÊN HỆ — render từ DATA.company + form
+     ═══════════════════════════════════════════════════════════ -->
 <section class="contact-section" id="contact">
   <div id="contact-info" class="reveal"></div>
   <div id="contact-form" class="reveal delay1"></div>
 </section>
 
-<!-- ═══ FOOTER ═══ -->
+<!-- ═══════════════════════════════════════════════════════════
+     FOOTER — render từ DATA.company
+     ═══════════════════════════════════════════════════════════ -->
 <footer>
   <div class="ft-inner" id="ft-inner"></div>
 </footer>
 
-<!-- ═══ ZALO BUTTON ═══ -->
-<a href="#" class="zalo-btn" target="_blank" title="Chat Zalo với LAB héritage">
-  <div class="z-tip">Chat Zalo · Mr. Tú Đỗ - Leader PM LAB héritage</div>
-  <img src="/images/logo-zalo.webp" alt="Zalo Logo" 
-  style="
-      width: 32px;  
-      height: 32px;
-      display: block;
-      object-fit: contain;"
-    >
-  <!-- <svg viewBox="0 0 32 32" xmlns="https://page.widget.zalo.me/static/images/2.0/Logo.svg">
-    <path d="M16 2C8.268 2 2 8.044 2 15.5c0 3.875 1.672 7.368 4.344 9.875L5.25 29.5l4.5-1.438C11.312 28.996 13.625 29.5 16 29.5c7.732 0 14-6.044 14-13.5S23.732 2 16 2zm-4.594 8.313h6.25l-5.875 7.5h5.875v1.874h-6.625l5.875-7.5h-5.5v-1.874zm10.219 9.374a.94.94 0 01-.938.938.94.94 0 01-.937-.938.94.94 0 01.938-.937.94.94 0 01.937.937zm-2.188-4.937c0 1.024-.832 1.875-1.875 1.875h-1.25v1.875h-1.25V12.75h2.5c1.043 0 1.875.832 1.875 1.875v.125zm-1.25 0v-.125a.625.625 0 00-.625-.625h-1.25v1.375h1.25a.625.625 0 00.625-.625z"/>
-  </svg> -->
+<!-- ═══════════════════════════════════════════════════════════
+     NÚT GỌI ĐIỆN THOẠI — cố định góc phải
+     ═══════════════════════════════════════════════════════════ -->
+<a href="tel:+84862043042" class="call-btn"
+   title="Gọi ngay — Thiên Tú">
+  <div class="call-tip"
+       data-vi="+84 862 043 042 · Thiên Tú"
+       data-en="+84 862 043 042 · Thiên Tú - PM">+84 862 043 042 · Thiên Tú</div>
+  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/>
+  </svg>
 </a>
 
+<!-- ═══════════════════════════════════════════════════════════
+     ZALO BUTTON — cố định góc phải (dưới nút gọi)
+     ═══════════════════════════════════════════════════════════ -->
+     <a href="#" class="zalo-btn" target="_blank" title="Chat Zalo với LAB héritage">
+      <div class="z-tip"
+           data-vi="Chat Zalo · PM Thiên Tú"
+           data-en="Chat Zalo · PM Thiên Tú">Chat Zalo · Thiên Tú</div>
+      <img src="images/logo-zalo.webp" alt="Zalo" width="24" height="24">
+    </a>
 
-<!-- Scripts: data trước, app sau -->
+<!-- ═══════════════════════════════════════════════════════════
+     EMAILJS SDK
+     ⚙️ Thay YOUR_PUBLIC_KEY bằng Public Key từ emailjs.com
+     Hướng dẫn chi tiết trong file js/app.js
+     ═══════════════════════════════════════════════════════════ -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>
+  (function() {
+    if (typeof emailjs !== 'undefined') {
+      emailjs.init('YOUR_PUBLIC_KEY'); /* ← THAY PUBLIC KEY TẠI ĐÂY */
+    }
+  })();
+</script>
+
+<!-- Scripts: content → app → enhance (thứ tự quan trọng) -->
 <script src="data/content.js"></script>
 <script src="js/app.js"></script>
+<script src="js/enhance.js"></script>
 
 </body>
 </html>
