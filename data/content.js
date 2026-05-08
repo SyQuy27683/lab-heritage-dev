@@ -145,7 +145,7 @@ const DATA = {
      BEFORE / AFTER SLIDER
   ───────────────────────────────────────────────────────────── */
   before_after: {
-    img_before: "images/du-an-1.jpg", img_after: "images/du-an-1a.png",
+    img_before: "images/before-chateau.jpg", img_after: "images/after-chateau.jpg",
     label_before: "Trước Phục Chế", label_before_en: "Before",
     label_after:  "Sau Phục Chế",   label_after_en:  "After",
   },
@@ -246,7 +246,7 @@ const DATA = {
       name:"Nhà Hát Opera Sydney",         name_en:"Sydney Opera House",
       desc:"Bảo trì & phục hồi bề mặt — Tập đoàn KEIM",
       desc_en:"Surface maintenance & restoration — KEIM Group",
-      icon:"🎭", img:"images/sydney.png", featured:true,
+      icon:"🎭", img:"images/sydney1.jpg", featured:true,
       bg:"linear-gradient(135deg,#0e1018,#1a1c28)",
       detail:`
         <p style="color:var(--gold);font-size:11px;letter-spacing:2px;text-transform:uppercase;font-weight:700;margin-bottom:6px">Tập đoàn KEIM</p>
