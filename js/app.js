@@ -1254,9 +1254,9 @@ function closeModal() {
 /* ═══════════════════════════════════════════════════════════════
    EMAILJS — GỬI FORM (giữ nguyên)
 ═══════════════════════════════════════════════════════════════ */
-const EMAILJS_SERVICE_ID  = 'YOUR_SERVICE_ID';
-const EMAILJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID';
-const EMAILJS_PUBLIC_KEY  = 'YOUR_PUBLIC_KEY';
+const EMAILJS_SERVICE_ID  = 'service_3ydf5pk';
+const EMAILJS_TEMPLATE_ID = 'template_wxe2ics';
+const EMAILJS_PUBLIC_KEY  = '-v0X-AgNXpXwoVLlk';
 
 function getLang() {
   return document.documentElement.lang === 'en' ? 'en' : 'vi';
