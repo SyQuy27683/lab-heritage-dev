@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <!--
   ╔══════════════════════════════════════════════════════════════╗
-  ║  LAB héritage — index.html                                  ║
-  ║  Cấu trúc chính của trang:                                  ║
-  ║  header · hero · dự án tiêu biểu · câu chuyện minh chứng  ║
-  ║  form liên hệ · footer                                      ║
+  ║  LAB héritage — index.html                                   ║
+  ║  Cấu trúc chính của trang:                                   ║
+  ║  header · hero · dự án tiêu biểu · câu chuyện minh chứng     ║
+  ║  form liên hệ · footer                                       ║
   ║                                                              ║
-  ║  Song ngữ Vi/En qua data-vi / data-en attributes            ║
-  ║  Nội dung động render từ data/content.js qua js/app.js      ║
+  ║                                                              ║
+  ║                                                              ║
   ╚══════════════════════════════════════════════════════════════╝
 -->
 <html lang="vi">
@@ -40,7 +40,7 @@
 <nav id="nav">
   <!-- LOGO — thay logo.png bằng file thực tế của bạn -->
   <a href="#" class="nav-logo">
-    <img src="images/logo.png"
+    <img src="images/logo.svg"
          alt="LAB héritage logo"
          onerror="this.onerror=null;this.src='images/logo.svg'"/>
     <div class="nav-logo-text">
@@ -325,7 +325,29 @@
     </div>
   </div>
 </section>
-
+<!-- ═══════════════════════════════════════════════════════════
+     SỬ DỤNG SẢN PHẨM / PRODUCTS IN USE
+     Nội dung render từ DATA.brands trong content.js
+     Section heading tĩnh, cards động qua renderBrandSection()
+     ═══════════════════════════════════════════════════════════ -->
+     <section class="brand-section" id="brand-section">
+      <div class="brand-section-hd reveal">
+        <div class="label center"
+             data-vi="Đối Tác Chiến Lược"
+             data-en="Strategic Partners">Đối Tác Chiến Lược</div>
+        <h2 class="headline" style="text-align:center;margin-top:16px">
+          <span data-vi="Sử Dụng Sản Phẩm" data-en="Products">Sử Dụng Sản Phẩm</span><br/>
+          <em data-vi="Châu Âu Chính Hãng" data-en="In Use">Châu Âu Chính Hãng</em>
+        </h2>
+        <p class="brand-section-sub reveal delay1"
+           data-vi="Mọi dự án đều sử dụng 100% vật liệu và công nghệ có nguồn gốc Châu Âu chính hãng — cam kết chất lượng, bền vững và an toàn."
+           data-en="Every project uses 100% authentic European materials and technology — guaranteed quality, sustainability and safety.">
+          Mọi dự án đều sử dụng 100% vật liệu và công nghệ có nguồn gốc Châu Âu chính hãng — cam kết chất lượng, bền vững và an toàn.
+        </p>
+      </div>
+      <!-- Cards render bởi renderBrandSection() trong app.js -->
+      <div id="brand-section-grid" class="brand-section-grid"></div>
+    </section>
 
 
 <!-- ═══════════════════════════════════════════════════════════
@@ -344,6 +366,7 @@
   <div id="ins-grid" class="ins-grid"></div>
 </section>
 
+
 <!-- ═══════════════════════════════════════════════════════════
      LIÊN HỆ — render từ DATA.company + form
      ═══════════════════════════════════════════════════════════ -->
@@ -360,7 +383,7 @@
 </footer>
 
 <!-- ═══════════════════════════════════════════════════════════
-     NÚT GỌI ĐIỆN THOẠI — cố định góc phải
+     NÚT GỌI ĐIỆN THOẠI — 
      ═══════════════════════════════════════════════════════════ -->
 <a href="tel:+84862043042" class="call-btn"
    title="Gọi ngay — Thiên Tú">

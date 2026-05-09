@@ -33,7 +33,9 @@ const DATA = {
     contact:   "PM LAB héritage Thiên Tú",
     email:     "dotrongthientu@labheritage.com.vn",
     address:   "37/20 Nguyễn Minh Hoàng, P. Bảy Hiền, TP. Hồ Chí Minh",
+    address_en:"37/20 Nguyen Minh Hoang St, Bay Hien Ward, Ho Chi Minh City",
     workshop:  "Củ Chi, TP. Hồ Chí Minh — 2.000m²",
+    workshop_en:"Cu Chi, Ho Chi Minh City — 2.000m²",
     zalo:      "https://zalo.me/0862043042",
     map_embed: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15676.561324459686!2d106.63887676297509!3d10.800562329593577!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752900738897a5%3A0x1db482764c2bb725!2sLAB%20h%C3%A9ritage%20-%20Conserver%20la%20beaut%C3%A9!5e0!3m2!1svi!2sus!4v1778132886641!5m2!1svi!2sus",
   },
@@ -105,10 +107,21 @@ const DATA = {
 
     
 
-    /* Modal */
+    /* Modal dự án */
     modal_no_content_vi: "Nội dung chi tiết đang được cập nhật. Vui lòng liên hệ để biết thêm.",
     modal_no_content_en: "Detailed content coming soon. Please contact us for more information.",
     modal_cta_vi:        "→ Liên hệ tư vấn",               modal_cta_en:        "→ Contact for consultation",
+
+    /* Insights modal */
+    ins_read_more_vi:    "Xem Chi Tiết →",                  ins_read_more_en:    "Read More →",
+    ins_close_vi:        "Đóng",                            ins_close_en:        "Close",
+
+    /* Brand section */
+    brand_section_label_vi:  "Đối Tác Chiến Lược",          brand_section_label_en:  "Strategic Partners",
+    brand_section_h2_vi:     "Sử Dụng Sản Phẩm",            brand_section_h2_en:     "Products",
+    brand_section_h2_em_vi:  "Châu Âu Chính Hãng",          brand_section_h2_em_en:  "In Use",
+    brand_read_more_vi:      "Xem Chi Tiết →",               brand_read_more_en:      "Learn More →",
+    brand_close_vi:          "Đóng",                         brand_close_en:          "Close",
   },
 
   /* ─────────────────────────────────────────────────────────────
@@ -414,7 +427,7 @@ const DATA = {
   partners: [
     { name:"SAPHIR®",         sub:"Medaille d'Or 1925 · Paris",  style:"font-family:var(--font-ui);letter-spacing:3px;font-size:20px;font-weight:300" },
     { name:"Louis XIII°",     sub:"Avel",                         style:"font-size:16px;letter-spacing:1px" },
-    { name:"SONKIM LAND",     sub:"",                             style:"font-family:var(--font-ui);letter-spacing:3px;font-size:17px;font-weight:300" },
+    { name:"SONKIM LAND",     sub:"SONKIM Operation",                             style:"font-family:var(--font-ui);letter-spacing:3px;font-size:17px;font-weight:300" },
     { name:"HILTON.",         sub:"",                             style:"font-family:var(--font-ui);letter-spacing:4px;font-size:20px;font-weight:200" },
     { name:"Đại Quang Minh",  sub:"",                             style:"font-style:italic;font-size:20px" },
     { name:"MASTERISE HOMES", sub:"",                             style:"font-family:var(--font-ui);font-size:13px;letter-spacing:2px;font-weight:300" },
@@ -456,18 +469,60 @@ const DATA = {
   ───────────────────────────────────────────────────────────── */
   brands: [
     {
+      icon: "🇫🇷",
       name:"Tập Đoàn ALMA F.R.C.",
+      name_en:"ALMA F.R.C. Group",
       desc:"Hơn 100 năm lịch sử — giải thưởng EPV (Công Ty Di Sản). Phân phối độc quyền tại Việt Nam bởi Cleanco.",
-      desc_en:"Over 100 years of history — EPV (Heritage Company) Award. Exclusive distributor in Vietnam by Cleanco.",
+      desc_en:"Over 100 years of history — EPV award (Living Heritage Company). Exclusive distribution in Vietnam by Cleanco.",
       badge: "EPV Award · Phân Phối Độc Quyền VN",
       badge_en: "EPV Award · Exclusive Vietnam Distribution",
+      /* Nội dung chi tiết hiển thị trong modal
+         Cập nhật HTML bên dưới để bổ sung thông tin */
+      detail: `
+        <p>ALMA F.R.C. là <strong>tập đoàn bảo tồn di sản hàng đầu châu Âu</strong> với hơn một thế kỷ kinh nghiệm trong lĩnh vực bảo tồn, phục hồi và phục chế các công trình lịch sử.</p>
+        <p>Được trao giải thưởng <strong>EPV — Entreprise du Patrimoine Vivant</strong> (Công ty Di sản sống), khẳng định chất lượng sản phẩm và tính kế thừa truyền thống thủ công châu Âu lâu đời.</p>
+        <ul style="margin:14px 0 14px 20px;display:flex;flex-direction:column;gap:10px">
+          <li><strong>Phân phối độc quyền tại Việt Nam:</strong> Cleanco là đối tác chính thức phân phối toàn bộ dòng sản phẩm và giải pháp công nghệ bảo tồn của ALMA tại Việt Nam.</li>
+          <li><strong>Ứng dụng thực tế:</strong> Sản phẩm ALMA đã được ứng dụng thành công trong các dự án di sản thế giới như Château de la Mercerie (Pháp), các công trình lịch sử trên toàn châu Âu.</li>
+          <li><strong>Cam kết kỹ thuật:</strong> Mọi giải pháp đều tuân thủ tiêu chuẩn EN, ICOMOS và ISO về bảo tồn di sản văn hóa.</li>
+        </ul>
+      `,
+      detail_en: `
+        <p>ALMA F.R.C. is a <strong>leading European heritage conservation group</strong> with over a century of experience in the conservation, restoration, and rehabilitation of historic structures.</p>
+        <p>Awarded the <strong>EPV — Entreprise du Patrimoine Vivant</strong> (Living Heritage Company) label, confirming its exceptional quality and deep-rooted European craftsmanship tradition.</p>
+        <ul style="margin:14px 0 14px 20px;display:flex;flex-direction:column;gap:10px">
+          <li><strong>Exclusive distributor in Vietnam:</strong> Cleanco is the official partner distributing all ALMA conservation products and technologies in Vietnam.</li>
+          <li><strong>Real-world application:</strong> ALMA products have been successfully used in world heritage projects such as Château de la Mercerie (France) and historic structures across Europe.</li>
+          <li><strong>Technical commitment:</strong> All solutions comply with EN, ICOMOS, and ISO standards for cultural heritage conservation.</li>
+        </ul>
+      `,
     },
     {
+      icon: "🇩🇪",
       name:"KEIM — Sơn Khoáng Đức",
+      name_en:"KEIM — German Mineral Paint",
       desc:"Số 1 thế giới về sơn khoáng — gần 150 năm lịch sử. Bền trên 100 năm, thoáng khí tự nhiên, không VOC.",
-      desc_en:"World's #1 mineral paint — nearly 150 years. Durable 100+ years, naturally breathable, zero VOC.",
+      desc_en:"World No.1 in mineral paint — nearly 150 years of history. Lasts over 100 years, naturally breathable, VOC-free.",
       badge: "150 Năm · Độ Bền 100+ Năm",
       badge_en: "150 Years · 100+ Years Durability",
+      detail: `
+        <p>KEIM là <strong>hãng sơn khoáng đầu tiên và hàng đầu thế giới</strong>, được phát minh bởi A.W. Keim tại Đức năm 1878. Sau gần 150 năm, KEIM vẫn là tiêu chuẩn vàng của ngành sơn bảo tồn toàn cầu.</p>
+        <ul style="margin:14px 0 14px 20px;display:flex;flex-direction:column;gap:10px">
+          <li><strong>Liên kết silic hóa:</strong> Sản phẩm thẩm thấu và liên kết hóa học vĩnh cửu với nền đá, gạch, bê tông — không bao giờ bong tróc.</li>
+          <li><strong>Kháng tia UV tuyệt đối:</strong> Thành phần khoáng vô cơ đảm bảo màu sắc bền vĩnh cửu, không bao giờ ố vàng hay bạc màu dưới nắng gắt.</li>
+          <li><strong>Thoáng khí & không VOC:</strong> Cấu trúc tinh thể mở cho phép tường "thở" tự nhiên, chống nấm mốc, rêu mốc triệt để — an toàn tuyệt đối cho sức khỏe và môi trường.</li>
+          <li><strong>Bền hơn 100 năm:</strong> Được kiểm chứng qua hàng nghìn công trình di sản trên toàn thế giới, bao gồm Nhà Trắng (Hoa Kỳ), Nhà hát Opera Sydney (Úc).</li>
+        </ul>
+      `,
+      detail_en: `
+        <p>KEIM is the <strong>world's first and leading mineral paint brand</strong>, invented by A.W. Keim in Germany in 1878. After nearly 150 years, KEIM remains the gold standard of conservation paint globally.</p>
+        <ul style="margin:14px 0 14px 20px;display:flex;flex-direction:column;gap:10px">
+          <li><strong>Silicification bond:</strong> Penetrates and permanently bonds with stone, brick, or concrete substrates — never peels.</li>
+          <li><strong>Absolute UV resistance:</strong> Inorganic mineral composition ensures permanently stable color — never yellows or fades under intense sunlight.</li>
+          <li><strong>Breathable & VOC-free:</strong> Open crystalline structure allows walls to breathe naturally, completely preventing mold and algae — absolutely safe for health and the environment.</li>
+          <li><strong>100+ year durability:</strong> Verified across thousands of heritage projects worldwide, including the White House (USA) and Sydney Opera House (Australia).</li>
+        </ul>
+      `,
     },
   ],
 
@@ -478,27 +533,77 @@ const DATA = {
   insights: [
     {
       icon:"🎨", img:"",
-      tag:"Góc Kỹ Thuật",            tag_en:"Technical Corner",
+      tag:"Góc Kỹ Thuật",  tag_en:"Technical Corner",
       title:`Patina — "Màu Thời Gian": Vì Sao Không Được Xóa Bỏ?`,
       title_en:`Patina — "The Color of Time": Why It Must Never Be Erased`,
       excerpt:`Hiểu đúng về Patina và lý do đây là giá trị vô giá của di sản cần được bảo tồn, không phải loại bỏ...`,
-      excerpt_en:`Understanding Patina and why it represents an invaluable heritage value that must be preserved, not removed...`,
+      excerpt_en:`Understanding Patina and why it is an invaluable heritage value to be preserved, not removed...`,
+      /* ─ Nội dung chi tiết hiển thị trong modal ─
+         Dùng HTML. Cập nhật trực tiếp tại đây khi cần thêm nội dung. */
+      detail: `
+        <p>Lớp Patina không đơn thuần là bụi bẩn hay dấu hiệu cũ kỹ, mà là <strong>chứng chỉ thời gian</strong> của một di sản.</p>
+        <ul style="margin:14px 0 14px 20px;display:flex;flex-direction:column;gap:10px">
+          <li><strong>Giá trị nguyên bản:</strong> Patina bảo vệ bề mặt vật liệu khỏi tác động tiêu cực từ môi trường, đóng vai trò như một "lớp da" tự nhiên.</li>
+          <li><strong>Tính thẩm mỹ:</strong> Tạo nên chiều sâu và linh hồn cho hiện vật mà không một kỹ thuật nhân tạo nào có thể sao chép hoàn hảo.</li>
+          <li><strong>Lưu ý:</strong> Việc tẩy xóa Patina thô bạo sẽ làm mất đi giá trị lịch sử và khiến vật liệu mất đi lớp bảo vệ cốt lõi, dẫn đến hư hại nhanh chóng hơn.</li>
+        </ul>
+      `,
+      detail_en: `
+        <p>Patina is not merely dirt or a sign of age; it is the <strong>timestamp of a heritage</strong>.</p>
+        <ul style="margin:14px 0 14px 20px;display:flex;flex-direction:column;gap:10px">
+          <li><strong>Original value:</strong> Patina protects the material surface from environmental impacts, acting as a natural "skin".</li>
+          <li><strong>Aesthetics:</strong> It creates depth and soul for artifacts that no artificial technique can perfectly replicate.</li>
+          <li><strong>Note:</strong> Aggressive removal of patina destroys historical value and strips away the core protection, leading to faster deterioration.</li>
+        </ul>
+      `,
     },
     {
       icon:"🪵", img:"",
-      tag:"Hướng Dẫn Chăm Sóc",     tag_en:"Care Guide",
+      tag:"Hướng Dẫn Chăm Sóc",  tag_en:"Care Guide",
       title:"Bảo Quản Kết Cấu Gỗ Sau Phục Hồi: Quy Trình Chuẩn Châu Âu",
       title_en:"Preserving Timber Structures After Restoration: European Standard Process",
       excerpt:"Chế độ kiểm tra định kỳ, sản phẩm dưỡng gỗ ALMA F.R.C. phù hợp với từng loại gỗ...",
       excerpt_en:"Periodic inspection schedule, ALMA F.R.C. wood conditioning products suited to each timber type...",
+      detail: `
+        <p>Phục hồi gỗ không dừng lại ở việc làm đẹp, mà là <strong>kéo dài tuổi thọ</strong> dựa trên các nguyên tắc bền vững:</p>
+        <ul style="margin:14px 0 14px 20px;display:flex;flex-direction:column;gap:10px">
+          <li><strong>Xử lý sinh học:</strong> Tiêu diệt triệt để nấm mốc và côn trùng gây hại bằng các hoạt chất đạt chuẩn an toàn sức khỏe.</li>
+          <li><strong>Củng cố kết cấu:</strong> Sử dụng nhựa epoxy chuyên dụng hoặc kỹ thuật ghép mộng truyền thống để gia cường các điểm yếu mà không làm thay đổi đặc tính cơ lý của gỗ.</li>
+          <li><strong>Lớp phủ "thở":</strong> Ưu tiên dầu bóng (Oil) hoặc Wax tự nhiên, cho phép gỗ trao đổi độ ẩm với môi trường, ngăn ngừa tình trạng nứt vỡ hoặc mục rỗng từ bên trong.</li>
+        </ul>
+      `,
+      detail_en: `
+        <p>Wood restoration does not stop at beautification; it <strong>extends lifespan</strong> based on sustainable principles:</p>
+        <ul style="margin:14px 0 14px 20px;display:flex;flex-direction:column;gap:10px">
+          <li><strong>Biological treatment:</strong> Thoroughly eliminate mold and harmful insects using active substances that meet health safety standards.</li>
+          <li><strong>Structural reinforcement:</strong> Use specialized epoxy resin or traditional mortise techniques to strengthen weak points without altering the mechanical properties of the wood.</li>
+          <li><strong>Breathable coating:</strong> Prioritize natural oil or wax finishes, allowing wood to exchange moisture with the environment, preventing cracking or hollow rot from within.</li>
+        </ul>
+      `,
     },
     {
       icon:"🏛️", img:"",
-      tag:"Nghiên Cứu Di Sản",       tag_en:"Heritage Research",
+      tag:"Nghiên Cứu Di Sản",  tag_en:"Heritage Research",
       title:"Sơn Khoáng KEIM: Tại Sao Bền Hơn 100 Năm?",
       title_en:"KEIM Mineral Paint: Why Does It Last Over 100 Years?",
       excerpt:"Phân tích khoa học về cơ chế kết dính của sơn khoáng vào đá và vữa...",
       excerpt_en:"Scientific analysis of the bonding mechanism of mineral paint to stone and mortar...",
+      detail: `
+        <p>Khác hoàn toàn với sơn nhũ tương thông thường, sơn khoáng KEIM sở hữu độ bền vĩnh cửu nhờ cơ chế <strong>Hóa thạch (Silicification)</strong>:</p>
+        <ul style="margin:14px 0 14px 20px;display:flex;flex-direction:column;gap:10px">
+          <li><strong>Liên kết Silic hóa:</strong> Thay vì chỉ dính trên bề mặt, sơn khoáng thẩm thấu và tạo liên kết hóa học không thể tách rời với cốt nền đá, gạch, bê tông.</li>
+          <li><strong>Kháng tia UV tuyệt đối:</strong> Thành phần khoáng chất vô cơ giúp màu sắc không bao giờ bị bạc hay biến đổi dưới ánh nắng gay gắt.</li>
+          <li><strong>Thoát hơi nước cực cao:</strong> Cấu trúc tinh thể mở giúp tường "thở" tự nhiên, loại bỏ hoàn toàn hiện tượng phồng rộp, bong tróc do ẩm từ bên trong.</li>
+        </ul>
+      `,
+      detail_en: `
+        <p>Completely different from ordinary emulsion paints, KEIM mineral paint possesses everlasting durability thanks to its <strong>Fossilization (Silicification)</strong> mechanism:</p>
+        <ul style="margin:14px 0 14px 20px;display:flex;flex-direction:column;gap:10px">
+          <li><strong>Silicification bond:</strong> Instead of just adhering to the surface, mineral paint penetrates and forms an inseparable chemical bond with the stone, brick, or concrete substrate.</li>
+          <li><strong>Absolute UV resistance:</strong> Inorganic mineral composition ensures colors never fade or change under intense sunlight.</li>
+          <li><strong>Extremely high vapor permeability:</strong> Open crystalline structure allows walls to breathe naturally, completely eliminating blistering and peeling caused by internal moisture.</li>
+        </ul>
+      `,
     },
   ],
 

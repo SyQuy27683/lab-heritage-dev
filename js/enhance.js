@@ -138,8 +138,118 @@ function applyLang() {
   const closeBtn = document.getElementById('proj-modal-close-btn');
   if (closeBtn) closeBtn.setAttribute('aria-label', isEn ? 'Close' : 'Đóng');
 
-  /* ── 7. "Xem Chi Tiết" buttons trên project cards ── */
+  /* ── 7. Project card "Xem Chi Tiết" buttons ── */
   document.querySelectorAll('.pi-detail-btn[data-vi]').forEach(btn => {
     btn.textContent = isEn ? (btn.dataset.en || btn.dataset.vi) : btn.dataset.vi;
   });
+
+  /* ── 8. Insight card "Xem Chi Tiết / Read More" buttons ── */
+  document.querySelectorAll('.ins-detail-btn[data-vi]').forEach(btn => {
+    btn.textContent = isEn ? (btn.dataset.en || btn.dataset.vi) : btn.dataset.vi;
+  });
+
+  /* ── 9. Insight modal close bottom button ── */
+  const insCloseBtm = document.getElementById('ins-modal-close-bottom');
+  if (insCloseBtm) insCloseBtm.textContent = isEn ? 'Close' : 'Đóng';
+
+  /* ── 10. Insight modal: nếu đang mở → cập nhật ngôn ngữ nội dung ── */
+  const insModal = document.getElementById('ins-modal-overlay');
+  if (insModal && insModal.classList.contains('open')) {
+    if (typeof updateInsightModalContent === 'function'
+        && window._currentInsightIndex !== undefined
+        && window._currentInsightIndex !== null) {
+      updateInsightModalContent(window._currentInsightIndex);
+    }
+  }
+
+  /* ── 11. Brand section "Xem Chi Tiết / Learn More" buttons ── */
+  document.querySelectorAll('.brd-detail-btn[data-vi]').forEach(btn => {
+    btn.textContent = isEn ? (btn.dataset.en || btn.dataset.vi) : btn.dataset.vi;
+  });
+
+  /* ── 12. Brand modal close bottom button ── */
+  const brandCloseBtm = document.getElementById('brand-modal-close-bottom');
+  if (brandCloseBtm) brandCloseBtm.textContent = isEn ? 'Close' : 'Đóng';
+
+  /* ── 13. Brand modal: nếu đang mở → cập nhật ngôn ngữ ── */
+  const brandModal = document.getElementById('brand-modal-overlay');
+  if (brandModal && brandModal.classList.contains('open')) {
+    if (typeof updateBrandModalContent === 'function'
+        && typeof _currentBrandIndex !== 'undefined'
+        && _currentBrandIndex !== null) {
+      updateBrandModalContent(_currentBrandIndex);
+    }
+  }
+
+  /* ── 14. Brand section heading labels ── */
+  const brdLabel = document.querySelector('.brand-section-hd .label');
+  if (brdLabel && brdLabel.dataset.vi) {
+    brdLabel.textContent = isEn ? (brdLabel.dataset.en || brdLabel.dataset.vi) : brdLabel.dataset.vi;
+  }
 }
+
+
+/* ══════════════════════════════════════════════════════════════
+   VISUAL ENHANCEMENT — Scroll reveal stagger & micro UX
+   Đặt trong enhance.js — không động vào app.js hay HTML
+══════════════════════════════════════════════════════════════ */
+document.addEventListener('DOMContentLoaded', initEnhancements);
+
+function initEnhancements() {
+  /* Chạy ngay và lại sau khi app.js render xong */
+  applyStagger();
+  setTimeout(applyStagger, 500); /* chờ renderAll() hoàn tất */
+
+  /* Theo dõi DOM changes (khi render sections muộn) */
+  const mo = new MutationObserver(() => applyStagger());
+  mo.observe(document.body, { childList: true, subtree: true });
+  /* Dừng sau 5s để không tốn tài nguyên */
+  setTimeout(() => mo.disconnect(), 5000);
+}
+
+/**
+ * applyStagger()
+ * Gán CSS custom property --i (index) cho các nhóm card/item
+ * để CSS calc(var(--i) * 80ms) tạo hiệu ứng stagger tự động.
+ * Chỉ gán 1 lần (skip nếu đã có data-staggered).
+ */
+function applyStagger() {
+  const groups = [
+    /* selector nhóm cha → selector con */
+    ['#svc-grid',           '.svc-card'],
+    ['#proc-grid',          '.proc-step'],
+    ['#proj-grid',          '.pi'],
+    ['#prt-grid',           '.prt-item'],
+    ['#ins-grid',           '.ins-card'],
+    ['#brand-section-grid', '.brd-card'],
+    ['.stats-4',            '.stat-box'],
+    ['.wh-facts',           '.wh-fact'],
+    ['.std-list',           '.std-item'],
+    ['#brand-cards',        '.brand-card'],
+    ['#proof-section',      '.proof-p'],
+  ];
+
+  groups.forEach(([parentSel, childSel]) => {
+    const parent = document.querySelector(parentSel);
+    if (!parent || parent.dataset.staggered) return;
+
+    const children = parent.querySelectorAll(childSel);
+    if (!children.length) return;
+
+    children.forEach((el, i) => {
+      el.style.setProperty('--i', i);
+    });
+    parent.dataset.staggered = '1';
+  });
+}
+
+/* ── Tooltip accessibility: gán title từ data-vi/data-en ── */
+function syncTooltips() {
+  document.querySelectorAll('[data-vi]:not([title])').forEach(el => {
+    if (!el.querySelector('[data-vi]')) {         /* leaf node only */
+      const lang = document.documentElement.lang;
+      el.title = (lang === 'en' ? el.dataset.en : el.dataset.vi) || '';
+    }
+  });
+}
+setTimeout(syncTooltips, 600);

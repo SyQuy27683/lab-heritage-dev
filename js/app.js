@@ -20,6 +20,9 @@ document.addEventListener('DOMContentLoaded', () => {
   initFilters();        // Project filter tabs
   initForm();           // Form validation + EmailJS
   initModal();          // Project modal dialog
+  initInsightModal();   // Insight knowledge modal
+  initBrandModal();     // Brand / partner modal
+  renderBrandSection(); // "Sử Dụng Sản Phẩm" section
   initLanguageSwitcher(); // Thêm nút chuyển ngữ và xử lý
 });
 
@@ -343,21 +346,218 @@ function renderStandards() {
 function renderInsights() {
   const el = document.getElementById('ins-grid');
   if (!el) return;
+  const L = DATA.ui_labels;
   el.innerHTML = DATA.insights.map((ins, i) => {
     const thumbContent = ins.img
       ? `<img src="${ins.img}" alt="${ins.tag}" onerror="this.style.display='none'">${ins.icon}`
       : ins.icon;
+    /* Chỉ hiện nút "Xem Chi Tiết" nếu có nội dung detail */
+    const hasDetail = ins.detail || ins.detail_en;
+    const detailBtn = hasDetail
+      ? `<button class="ins-detail-btn"
+              data-vi="${escapeAttr(L.ins_read_more_vi || 'Xem Chi Tiết →')}"
+              data-en="${escapeAttr(L.ins_read_more_en || 'Read More →')}"
+              data-ins-index="${i}"
+              type="button">
+           ${L.ins_read_more_vi || 'Xem Chi Tiết →'}
+         </button>`
+      : '';
     return `
-      <div class="ins-card reveal${i > 0 ? ` delay${i}` : ''}">
+      <div class="ins-card reveal${i > 0 ? ` delay${i}` : ''}"
+           ${hasDetail ? `data-ins-index="${i}" style="cursor:pointer"` : ''}>
         <div class="ins-thumb">${thumbContent}</div>
         <div class="ins-body">
-          <div class="ins-tag"     data-vi="${escapeAttr(ins.tag)}"     data-en="${escapeAttr(ins.tag_en || ins.tag)}">${ins.tag}</div>
-          <div class="ins-title"   data-vi="${escapeAttr(ins.title)}"   data-en="${escapeAttr(ins.title_en || ins.title)}">${ins.title}</div>
-          <p class="ins-excerpt"   data-vi="${escapeAttr(ins.excerpt)}" data-en="${escapeAttr(ins.excerpt_en || ins.excerpt)}">${ins.excerpt}</p>
+          <div class="ins-tag"   data-vi="${escapeAttr(ins.tag)}"     data-en="${escapeAttr(ins.tag_en || ins.tag)}">${ins.tag}</div>
+          <div class="ins-title" data-vi="${escapeAttr(ins.title)}"   data-en="${escapeAttr(ins.title_en || ins.title)}">${ins.title}</div>
+          <p class="ins-excerpt" data-vi="${escapeAttr(ins.excerpt)}" data-en="${escapeAttr(ins.excerpt_en || ins.excerpt)}">${ins.excerpt}</p>
+          ${detailBtn}
         </div>
       </div>
     `;
   }).join('');
+
+  /* Gắn click: cả card và nút đều mở modal */
+  el.querySelectorAll('[data-ins-index]').forEach(trigger => {
+    trigger.addEventListener('click', e => {
+      /* Tránh bubble khi click nút bên trong card cũng có data-ins-index */
+      const idx = parseInt(trigger.dataset.insIndex);
+      openInsightModal(idx);
+    });
+  });
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   BRAND SECTION — "Sử Dụng Sản Phẩm / Products in Use"
+   ─────────────────────────────────────────────────────────────
+   Render 2 thẻ partner lớn, mỗi thẻ có nút "Xem Chi Tiết"
+   mở modal riêng với nội dung detail/detail_en từ content.js.
+   Để cập nhật nội dung: chỉ sửa DATA.brands trong content.js.
+═══════════════════════════════════════════════════════════════ */
+function renderBrandSection() {
+  const grid = document.getElementById('brand-section-grid');
+  if (!grid) return;
+  const L = DATA.ui_labels;
+
+  grid.innerHTML = DATA.brands.map((b, i) => `
+    <div class="brd-card reveal${i === 1 ? ' delay2' : ''}"
+         data-brand-index="${i}"
+         role="button" tabindex="0"
+         aria-label="${escapeAttr(b.name)}">
+      <!-- Dải màu trang trí trên cùng -->
+      <div class="brd-card-bar"></div>
+
+      <div class="brd-card-inner">
+        <!-- Icon + tên -->
+        <div class="brd-card-top">
+          <div class="brd-icon">${b.icon || '🏛️'}</div>
+          <div class="brd-badge"
+               data-vi="${escapeAttr(b.badge)}"
+               data-en="${escapeAttr(b.badge_en || b.badge)}">${b.badge}</div>
+        </div>
+
+        <div class="brd-name"
+             data-vi="${escapeAttr(b.name)}"
+             data-en="${escapeAttr(b.name_en || b.name)}">${b.name}</div>
+
+        <p class="brd-desc"
+           data-vi="${escapeAttr(b.desc)}"
+           data-en="${escapeAttr(b.desc_en || b.desc)}">${b.desc}</p>
+
+        <!-- Separator vàng -->
+        <div class="brd-divider"></div>
+
+        <!-- Nút Xem chi tiết -->
+        <button class="brd-detail-btn"
+                data-brand-index="${i}"
+                data-vi="${escapeAttr(L.brand_read_more_vi || 'Xem Chi Tiết →')}"
+                data-en="${escapeAttr(L.brand_read_more_en || 'Learn More →')}"
+                type="button">
+          ${L.brand_read_more_vi || 'Xem Chi Tiết →'}
+        </button>
+      </div>
+
+      <!-- Glow effect backdrop -->
+      <div class="brd-glow"></div>
+    </div>
+  `).join('');
+
+  /* Gắn sự kiện: click card hoặc nút đều mở modal */
+  grid.querySelectorAll('[data-brand-index]').forEach(el => {
+    el.addEventListener('click', e => {
+      /* Tránh double-fire khi click nút bên trong card */
+      const target = e.target.closest('.brd-detail-btn') || e.target.closest('.brd-card');
+      if (!target) return;
+      const idx = parseInt(target.dataset.brandIndex);
+      openBrandModal(idx);
+    });
+    /* Accessibility: Enter/Space key */
+    if (el.classList.contains('brd-card')) {
+      el.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          openBrandModal(parseInt(el.dataset.brandIndex));
+        }
+      });
+    }
+  });
+}
+
+/* ── Brand Modal ── */
+let _brandModalEl  = null;
+let _currentBrandIndex = null;
+
+function initBrandModal() {
+  _brandModalEl = document.createElement('div');
+  _brandModalEl.id = 'brand-modal-overlay';
+  _brandModalEl.className = 'proj-modal-overlay brand-modal-overlay';
+  _brandModalEl.setAttribute('role', 'dialog');
+  _brandModalEl.setAttribute('aria-modal', 'true');
+  _brandModalEl.innerHTML = `
+    <div class="proj-modal-box brand-modal-box" id="brand-modal-box" tabindex="-1">
+      <button class="proj-modal-close" id="brand-modal-close-btn"
+              type="button" aria-label="Đóng">✕</button>
+
+      <!-- Header với gradient vàng -->
+      <div class="brand-modal-header" id="brand-modal-header">
+        <div class="brand-modal-header-icon" id="brand-modal-icon"></div>
+        <div class="brand-modal-header-overlay"></div>
+      </div>
+
+      <div class="proj-modal-body">
+        <div class="proj-modal-cat" id="brand-modal-badge"></div>
+        <h2 id="brand-modal-name"></h2>
+        <div class="proj-modal-desc" id="brand-modal-desc"></div>
+        <div class="proj-modal-detail" id="brand-modal-detail"></div>
+
+        <!-- Footer: nút đóng -->
+        <div class="ins-modal-footer" style="margin-top:24px">
+          <button class="ins-modal-close-bottom" id="brand-modal-close-bottom"
+                  data-vi="Đóng" data-en="Close" type="button">Đóng</button>
+        </div>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(_brandModalEl);
+
+  /* Đóng: 3 cách */
+  _brandModalEl.addEventListener('click', e => {
+    if (e.target === _brandModalEl) closeBrandModal();
+  });
+  document.getElementById('brand-modal-close-btn').addEventListener('click', e => {
+    e.stopPropagation(); closeBrandModal();
+  });
+  document.getElementById('brand-modal-close-bottom').addEventListener('click', e => {
+    e.stopPropagation(); closeBrandModal();
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && _brandModalEl.classList.contains('open')) closeBrandModal();
+  });
+}
+
+function openBrandModal(idx) {
+  if (!_brandModalEl) initBrandModal();
+  _currentBrandIndex = idx;
+  updateBrandModalContent(idx);
+  _brandModalEl.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  setTimeout(() => document.getElementById('brand-modal-close-btn')?.focus(), 60);
+}
+
+function updateBrandModalContent(idx) {
+  const b    = DATA.brands[idx];
+  const isEn = currentLang === 'en';
+  if (!b) return;
+
+  const iconEl   = document.getElementById('brand-modal-icon');
+  const badgeEl  = document.getElementById('brand-modal-badge');
+  const nameEl   = document.getElementById('brand-modal-name');
+  const descEl   = document.getElementById('brand-modal-desc');
+  const detailEl = document.getElementById('brand-modal-detail');
+  const closeBtm = document.getElementById('brand-modal-close-bottom');
+  const closeBtn = document.getElementById('brand-modal-close-btn');
+
+  if (closeBtm) closeBtm.textContent = isEn ? 'Close' : 'Đóng';
+  if (closeBtn) closeBtn.setAttribute('aria-label', isEn ? 'Close' : 'Đóng');
+
+  if (iconEl)   iconEl.textContent   = b.icon || '🏛️';
+  if (badgeEl)  badgeEl.textContent  = isEn ? (b.badge_en || b.badge) : b.badge;
+  if (nameEl)   nameEl.textContent   = isEn ? (b.name_en  || b.name)  : b.name;
+  if (descEl)   descEl.textContent   = isEn ? (b.desc_en  || b.desc)  : b.desc;
+
+  if (detailEl) {
+    detailEl.innerHTML = (isEn && b.detail_en) ? b.detail_en
+                        : b.detail ? b.detail
+                        : `<p style="color:var(--muted);font-style:italic">
+                             ${isEn ? 'Detailed content coming soon.' : 'Nội dung đang được cập nhật.'}
+                           </p>`;
+  }
+}
+
+function closeBrandModal() {
+  if (!_brandModalEl) return;
+  _brandModalEl.classList.remove('open');
+  document.body.style.overflow = '';
+  _currentBrandIndex = null;
 }
 
 /* ── Contact section ── */
@@ -402,14 +602,16 @@ function renderContact() {
           <div class="ci-icon">📍</div>
           <div class="ci-text">
             <strong data-vi="${L.label_address_vi}" data-en="${L.label_address_en}">${L.label_address_vi}</strong>
-            <span>${c.address}</span>
+            <span data-vi="${escapeAttr(c.address)}"
+                  data-en="${escapeAttr(c.address_en || c.address)}">${c.address}</span>
           </div>
         </div>
         <div class="ci-item">
           <div class="ci-icon">🏭</div>
           <div class="ci-text">
             <strong data-vi="${L.label_workshop_vi}" data-en="${L.label_workshop_en}">${L.label_workshop_vi}</strong>
-            <span>${c.workshop}</span>
+            <span data-vi="${escapeAttr(c.workshop)}"
+                  data-en="${escapeAttr(c.workshop_en || c.workshop)}">${c.workshop}</span>
           </div>
         </div>
       </div>
@@ -578,16 +780,32 @@ function updateAllTexts() {
   // 5. Cập nhật lang attribute trên html
   document.documentElement.lang = currentLang;
   
-  // 6. Nếu modal đang mở, cập nhật nội dung modal theo ngôn ngữ mới
+  // 6. Nếu project modal đang mở → cập nhật theo ngôn ngữ mới
   const modal = document.getElementById('proj-modal-overlay');
   if (modal && modal.classList.contains('open')) {
-    // Lấy lại project hiện tại (được lưu ở đâu đó) – cách đơn giản: tìm project bằng tên?
-    // Ta sẽ lưu currentProjectId vào biến toàn cục
-    if (window._currentProjectIndex !== undefined) {
+    if (window._currentProjectIndex !== undefined && window._currentProjectIndex !== null) {
       const project = DATA.projects[window._currentProjectIndex];
       if (project) updateModalContent(project);
     }
   }
+  // 7. Nếu insight modal đang mở → cập nhật theo ngôn ngữ mới
+  const insModal = document.getElementById('ins-modal-overlay');
+  if (insModal && insModal.classList.contains('open')) {
+    if (window._currentInsightIndex !== undefined && window._currentInsightIndex !== null) {
+      updateInsightModalContent(window._currentInsightIndex);
+    }
+  }
+  // 8. Nếu brand modal đang mở → cập nhật theo ngôn ngữ mới
+  const brandModal = document.getElementById('brand-modal-overlay');
+  if (brandModal && brandModal.classList.contains('open')) {
+    if (typeof updateBrandModalContent === 'function' && _currentBrandIndex !== null) {
+      updateBrandModalContent(_currentBrandIndex);
+    }
+  }
+  // 9. Cập nhật text nút "Xem Chi Tiết" brand cards
+  document.querySelectorAll('.brd-detail-btn[data-vi]').forEach(btn => {
+    btn.textContent = isEn ? (btn.dataset.en || btn.dataset.vi) : btn.dataset.vi;
+  });
 }
 
 /* Escape HTML trong thuộc tính để tránh vỡ cấu trúc */
@@ -787,9 +1005,13 @@ function initSlider() {
 function initReveal() {
   const obs = new IntersectionObserver(
     entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('on'); }),
-    { threshold: 0.08 }
+    { threshold: 0.07 }
   );
-  setTimeout(() => document.querySelectorAll('.reveal').forEach(el => obs.observe(el)), 120);
+  setTimeout(() => {
+    document.querySelectorAll(
+      '.reveal, .reveal-left, .reveal-right, .reveal-scale, .brd-card'
+    ).forEach(el => obs.observe(el));
+  }, 120);
 }
 
 function initFilters() {
@@ -910,6 +1132,115 @@ function updateModalContent(project) {
       imgEl.innerHTML = `<span style="font-size:80px;opacity:.12;position:relative;z-index:1">${project.icon}</span>`;
     }
   }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   INSIGHTS MODAL — dialog chi tiết bài kiến thức
+   ─────────────────────────────────────────────────────────────
+   Dùng chung overlay+box với project modal nhưng render khác nhau.
+   Thêm nội dung: sửa trường detail / detail_en trong insights[]
+   trong data/content.js.
+═══════════════════════════════════════════════════════════════ */
+let _insModalEl = null;
+
+function initInsightModal() {
+  _insModalEl = document.createElement('div');
+  _insModalEl.id = 'ins-modal-overlay';
+  _insModalEl.className = 'proj-modal-overlay'; /* Dùng lại CSS của project modal */
+  _insModalEl.setAttribute('role', 'dialog');
+  _insModalEl.setAttribute('aria-modal', 'true');
+  _insModalEl.innerHTML = `
+    <div class="proj-modal-box ins-modal-box" id="ins-modal-box" tabindex="-1">
+      <button class="proj-modal-close" id="ins-modal-close-btn" type="button" aria-label="Đóng">✕</button>
+      <div class="ins-modal-header" id="ins-modal-header"></div>
+      <div class="proj-modal-body">
+        <div class="proj-modal-cat"    id="ins-modal-tag"></div>
+        <h2                            id="ins-modal-title"></h2>
+        <div class="proj-modal-detail" id="ins-modal-detail"></div>
+        <!-- Nút Đóng / Close ở cuối modal -->
+        <div class="ins-modal-footer">
+          <button class="ins-modal-close-bottom" id="ins-modal-close-bottom"
+                  data-vi="Đóng" data-en="Close" type="button">Đóng</button>
+        </div>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(_insModalEl);
+
+  /* ─ Đóng: overlay click ─ */
+  _insModalEl.addEventListener('click', e => {
+    if (e.target === _insModalEl) closeInsightModal();
+  });
+  /* ─ Đóng: nút X ─ */
+  document.getElementById('ins-modal-close-btn').addEventListener('click', e => {
+    e.stopPropagation();
+    closeInsightModal();
+  });
+  /* ─ Đóng: nút Đóng/Close cuối modal ─ */
+  document.getElementById('ins-modal-close-bottom').addEventListener('click', e => {
+    e.stopPropagation();
+    closeInsightModal();
+  });
+  /* ─ Đóng: ESC ─ */
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && _insModalEl.classList.contains('open')) closeInsightModal();
+  });
+}
+
+function openInsightModal(idx) {
+  if (!_insModalEl) initInsightModal();
+  window._currentInsightIndex = idx;
+  updateInsightModalContent(idx);
+  _insModalEl.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  setTimeout(() => document.getElementById('ins-modal-close-btn')?.focus(), 60);
+}
+
+function updateInsightModalContent(idx) {
+  const ins  = DATA.insights[idx];
+  const isEn = currentLang === 'en';
+  if (!ins) return;
+
+  const tagEl    = document.getElementById('ins-modal-tag');
+  const titleEl  = document.getElementById('ins-modal-title');
+  const detailEl = document.getElementById('ins-modal-detail');
+  const headerEl = document.getElementById('ins-modal-header');
+  const closeBtn = document.getElementById('ins-modal-close-btn');
+  const closeBtm = document.getElementById('ins-modal-close-bottom');
+
+  /* Cập nhật ngôn ngữ nút đóng */
+  if (closeBtn)  closeBtn.setAttribute('aria-label', isEn ? 'Close' : 'Đóng');
+  if (closeBtm) {
+    closeBtm.setAttribute('data-vi', 'Đóng');
+    closeBtm.setAttribute('data-en', 'Close');
+    closeBtm.textContent = isEn ? 'Close' : 'Đóng';
+  }
+
+  /* Icon header */
+  if (headerEl) {
+    headerEl.innerHTML = ins.img
+      ? `<img src="${ins.img}" alt="${ins.tag}" style="width:100%;height:100%;object-fit:cover">`
+      : `<span style="font-size:clamp(56px,8vw,80px);opacity:.18">${ins.icon}</span>`;
+    headerEl.style.background = 'linear-gradient(135deg,var(--dark2),var(--dark))';
+  }
+
+  if (tagEl)   tagEl.textContent   = isEn ? (ins.tag_en   || ins.tag)   : ins.tag;
+  if (titleEl) titleEl.textContent = isEn ? (ins.title_en || ins.title) : ins.title;
+
+  if (detailEl) {
+    detailEl.innerHTML = (isEn && ins.detail_en) ? ins.detail_en
+                        : ins.detail ? ins.detail
+                        : `<p style="color:var(--muted);font-style:italic">
+                             ${isEn ? 'Detailed content coming soon.' : 'Nội dung đang được cập nhật.'}
+                           </p>`;
+  }
+}
+
+function closeInsightModal() {
+  if (!_insModalEl) return;
+  _insModalEl.classList.remove('open');
+  document.body.style.overflow = '';
+  window._currentInsightIndex = null;
 }
 
 function closeModal() {
