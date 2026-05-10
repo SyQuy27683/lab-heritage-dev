@@ -1392,7 +1392,7 @@ function initForm() {
   /* ── Cấu hình ──────────────────────────────────────────────
      Sửa các biến này để tuỳ chỉnh                            */
   var MUSIC_SRC = 'audio/nhac.mp3';
-  var MUSIC_VOL = 0.5;
+  var MUSIC_VOL = 0.3;
   var LOGO_SRC  = 'images/logo-lab1.png';   /* '' = ẩn ảnh logo   */
 
   /* ── Nội dung song ngữ ─────────────────────────────────────
