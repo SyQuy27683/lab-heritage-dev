@@ -1363,3 +1363,319 @@ function initForm() {
     });
   }, 300);
 }
+
+
+
+/* ══════════════════════════════════════════════════════════════
+   WELCOME DIALOG + MUSIC INLINE BUTTON
+   ─────────────────────────────────────────────────────────────
+   Cấu trúc dialog (5 dòng riêng biệt từ trên xuống):
+     [1] Logo (placeholder hoặc images/logo.png)
+     [2] "Chào mừng bạn đến với website chúng tôi"
+     [3] LAB héritage  (chữ lớn)
+     [4] Conserver la beauté  (chữ nghiêng nhỏ)
+     [5] Mô tả ngắn
+         [Nút Xác Nhận]
+
+   Nút loa: chèn vào TRƯỚC #lang-btn (cùng hàng, inline)
+            ẨN cho đến khi dialog đóng xong
+
+   🛠 ĐỔI FILE NHẠC  : sửa MUSIC_SRC
+   🛠 ĐỔI ÂM LƯỢNG   : sửa MUSIC_VOL (0.0–1.0)
+   🛠 TẮT NHẠC       : MUSIC_SRC = ''
+   🛠 ĐỔI NỘI DUNG   : sửa object WC_TEXT
+   🛠 ĐỔI ẢNH LOGO   : sửa LOGO_SRC (hoặc '' để ẩn ảnh)
+══════════════════════════════════════════════════════════════ */
+(function () {
+  'use strict';
+
+  /* ── Cấu hình ──────────────────────────────────────────────
+     Sửa các biến này để tuỳ chỉnh                            */
+  var MUSIC_SRC = 'audio/nhac.mp3';
+  var MUSIC_VOL = 0.5;
+  var LOGO_SRC  = 'images/logo-lab1.png';   /* '' = ẩn ảnh logo   */
+
+  /* ── Nội dung song ngữ ─────────────────────────────────────
+     Mỗi dòng trong dialog tương ứng một key                  */
+  var WC_TEXT = {
+    vi: {
+      greeting:   'Chào mừng bạn đến với website chúng tôi',
+      brand:      'LAB <em>héritage</em>',   /* HTML — em = italic vàng */
+      sub:        'Conserver la beauté',
+      desc:       'Chuyên <strong>phục dựng</strong> – <strong>phục chế</strong> di sản văn hoá, công trình kiến trúc',
+      btn:        'Xác Nhận',
+      note:       '♪ Nhạc nền sẽ phát sau khi xác nhận',
+      close_aria: 'Đóng',
+      play_aria:  'Bật nhạc nền',
+      pause_aria: 'Tắt nhạc nền',
+    },
+    en: {
+      greeting:   'Welcome to our website',
+      brand:      'LAB <em>héritage</em>',
+      sub:        'Preserving Beauty',
+      desc:       'Specializing in <strong>restoration</strong> &amp; <strong>conservation</strong> of cultural heritage and architecture',
+      btn:        'Confirm',
+      note:       '♪ Background music will play after you confirm',
+      close_aria: 'Close',
+      play_aria:  'Play background music',
+      pause_aria: 'Pause background music',
+    },
+  };
+
+  /* ── SVG icons ─────────────────────────────────────────────*/
+  var ICO_ON  = '<svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>';
+  var ICO_OFF = '<svg viewBox="0 0 24 24"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/></svg>';
+
+  /* ── State ─────────────────────────────────────────────────*/
+  var audioEl  = null;
+  var musicBtn = null;
+
+  /* ── Helpers ───────────────────────────────────────────────*/
+  function isEn()  { return document.documentElement.lang === 'en'; }
+  function tx(key) { return (WC_TEXT[isEn() ? 'en' : 'vi'] || WC_TEXT.vi)[key] || ''; }
+
+  /* ══════════════════════════════════════════════════════════
+     1. BUILD DIALOG
+  ══════════════════════════════════════════════════════════ */
+  function buildDialog() {
+    var ov = document.createElement('div');
+    ov.id        = 'wc-overlay';
+    ov.className = 'wc-overlay';
+    ov.setAttribute('role', 'dialog');
+    ov.setAttribute('aria-modal', 'true');
+    ov.setAttribute('aria-label', 'LAB héritage');
+
+    /* Logo: ảnh thực → fallback placeholder chữ */
+    var logoHtml = LOGO_SRC
+      ? '<img class="wc-logo-img" id="wc-logo-img" src="' + LOGO_SRC + '"' +
+          ' alt="LAB héritage"' +
+          ' onerror="' +
+            'this.style.display=\'none\';' +
+            'document.getElementById(\'wc-logo-ph\').style.display=\'inline-block\'' +
+          '">' +
+          '<span class="wc-logo-ph" id="wc-logo-ph" style="display:none">[LOGO]</span>'
+      : '<span class="wc-logo-ph">[LOGO]</span>';
+
+    ov.innerHTML =
+      '<div class="wc-box">' +
+        /* Nút X */
+        '<button class="wc-x" id="wc-x-btn" type="button"' +
+          ' aria-label="' + tx('close_aria') + '">&#10005;</button>' +
+
+        '<div class="wc-inner">' +
+
+          /* ── Dòng 1: Logo ── */
+          '<div class="wc-logo-wrap">' + logoHtml + '</div>' +
+
+          /* ── Dòng 2: Câu chào ── */
+          '<p class="wc-greeting" id="wc-greeting">' + tx('greeting') + '</p>' +
+
+          /* ── Dòng 3: LAB héritage ── */
+          '<p class="wc-brand" id="wc-brand">' + tx('brand') + '</p>' +
+
+          /* ── Dòng 4: Conserver la beauté ── */
+          '<p class="wc-sub" id="wc-sub">' + tx('sub') + '</p>' +
+
+          /* Divider */
+          '<div class="wc-rule"></div>' +
+
+          /* ── Dòng 5: Mô tả ngắn ── */
+          '<p class="wc-desc" id="wc-desc">' + tx('desc') + '</p>' +
+
+          /* Nút xác nhận */
+          '<button class="wc-confirm" id="wc-confirm-btn" type="button">' +
+            '<span id="wc-confirm-txt">' + tx('btn') + '</span>' +
+          '</button>' +
+
+          /* Note nhạc */
+          // (MUSIC_SRC
+          //   ? '<p class="wc-note" id="wc-note">' + tx('note') + '</p>'
+          //   : '') +
+
+        '</div>' +
+      '</div>';
+
+    document.body.appendChild(ov);
+    document.body.style.overflow = 'hidden';
+
+    setTimeout(function () {
+      var b = document.getElementById('wc-confirm-btn');
+      if (b) b.focus();
+    }, 160);
+
+    return ov;
+  }
+
+  /* ══════════════════════════════════════════════════════════
+     2. CLOSE DIALOG → phát nhạc → hiện nút loa
+  ══════════════════════════════════════════════════════════ */
+  function closeDialog(ov) {
+    ov.classList.add('wc-out');
+
+    ov.addEventListener('animationend', function handler(e) {
+      if (e.target !== ov) return;
+      ov.removeEventListener('animationend', handler);
+      ov.remove();
+      document.body.style.overflow = '';
+      startMusic();
+      showMusicBtn();
+    });
+  }
+
+  /* ══════════════════════════════════════════════════════════
+     3. MUSIC — tạo audio và phát
+        Gọi sau click → gesture hợp lệ → browser không chặn
+  ══════════════════════════════════════════════════════════ */
+  function startMusic() {
+    if (!MUSIC_SRC) return;
+
+    audioEl        = document.createElement('audio');
+    audioEl.id     = 'bg-music';
+    audioEl.loop   = true;
+    audioEl.volume = MUSIC_VOL;
+    audioEl.src    = MUSIC_SRC;
+    document.body.appendChild(audioEl);
+
+    audioEl.play().catch(function (e) {
+      console.warn('[Music] play() blocked:', e.message);
+    });
+
+    audioEl.addEventListener('play',  function () { syncMusicBtn(true);  });
+    audioEl.addEventListener('pause', function () { syncMusicBtn(false); });
+  }
+
+  /* ══════════════════════════════════════════════════════════
+     4. MUSIC INLINE BUTTON
+        Chèn TRƯỚC #lang-btn để nằm cùng hàng bên trái nút VI/EN
+  ══════════════════════════════════════════════════════════ */
+  function buildMusicBtn() {
+    var btn = document.createElement('button');
+    btn.id        = 'music-inline-btn';
+    btn.className = 'music-inline-btn';
+    btn.type      = 'button';
+    btn.title     = tx('play_aria');
+    btn.setAttribute('aria-label', tx('play_aria'));
+    btn.innerHTML = ICO_OFF;
+
+    /* Toggle play/pause */
+    btn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      if (!audioEl) return;
+      if (audioEl.paused) {
+        audioEl.play().catch(function () {});
+      } else {
+        audioEl.pause();
+      }
+    });
+
+    /* Chèn vào DOM ngay trước #lang-btn
+       Dùng MutationObserver để chờ injectLangBtn() của enhance.js chạy xong */
+    function tryInsert() {
+      if (document.getElementById('music-inline-btn')) return true; /* đã có */
+
+      var anchor =
+        document.getElementById('lang-btn') ||
+        document.querySelector('.lang-switcher, [class*="lang-btn"], [id*="lang"]') ||
+        document.getElementById('ham') ||
+        null;
+
+      if (anchor && anchor.parentNode) {
+        anchor.parentNode.insertBefore(btn, anchor);
+        return true;
+      }
+      return false;
+    }
+
+    if (!tryInsert()) {
+      var obs = new MutationObserver(function () {
+        if (tryInsert()) obs.disconnect();
+      });
+      obs.observe(document.getElementById('nav') || document.body, {
+        childList: true, subtree: true,
+      });
+      setTimeout(function () { tryInsert(); obs.disconnect(); }, 1200);
+    }
+
+    return btn;
+  }
+
+  function showMusicBtn() {
+    if (musicBtn) musicBtn.classList.add('mib-on');
+  }
+
+  function syncMusicBtn(playing) {
+    if (!musicBtn) return;
+    var ariaKey = playing ? 'pause_aria' : 'play_aria';
+    musicBtn.innerHTML = playing ? ICO_ON : ICO_OFF;
+    musicBtn.title = tx(ariaKey);
+    musicBtn.setAttribute('aria-label', tx(ariaKey));
+    musicBtn.classList.toggle('mib-playing', playing);
+  }
+
+  /* ══════════════════════════════════════════════════════════
+     5. SYNC TEXT KHI ĐỔI NGÔN NGỮ
+  ══════════════════════════════════════════════════════════ */
+  function syncLang() {
+    var fields = {
+      'wc-greeting':    { key: 'greeting', html: false },
+      'wc-brand':       { key: 'brand',    html: true  },
+      'wc-sub':         { key: 'sub',      html: false },
+      'wc-desc':        { key: 'desc',     html: true  },
+      'wc-confirm-txt': { key: 'btn',      html: false },
+      'wc-note':        { key: 'note',     html: false },
+    };
+    Object.keys(fields).forEach(function (id) {
+      var el = document.getElementById(id);
+      if (!el) return;
+      var f = fields[id];
+      if (f.html) el.innerHTML    = tx(f.key);
+      else        el.textContent  = tx(f.key);
+    });
+    var xBtn = document.getElementById('wc-x-btn');
+    if (xBtn) xBtn.setAttribute('aria-label', tx('close_aria'));
+
+    /* Sync nút loa */
+    if (musicBtn) {
+      var playing = audioEl && !audioEl.paused;
+      syncMusicBtn(!!playing);
+    }
+  }
+
+  /* ══════════════════════════════════════════════════════════
+     KHỞI CHẠY
+  ══════════════════════════════════════════════════════════ */
+  function run() {
+    /* Tạo nút loa ngay (ẩn — chờ dialog đóng mới hiện) */
+    musicBtn = buildMusicBtn();
+
+    /* Tạo dialog */
+    var ov = buildDialog();
+
+    /* Gắn sự kiện đóng */
+    ['wc-x-btn', 'wc-confirm-btn'].forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el) el.addEventListener('click', function () { closeDialog(ov); });
+    });
+
+    /* ESC */
+    document.addEventListener('keydown', function esc(e) {
+      if (e.key === 'Escape' && document.getElementById('wc-overlay')) {
+        document.removeEventListener('keydown', esc);
+        closeDialog(ov);
+      }
+    });
+
+    /* Theo dõi đổi ngôn ngữ */
+    new MutationObserver(syncLang)
+      .observe(document.documentElement, {
+        attributes: true, attributeFilter: ['lang'],
+      });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', run);
+  } else {
+    run();
+  }
+
+})();

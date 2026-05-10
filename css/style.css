@@ -2075,3 +2075,314 @@ button:focus-visible,
     .pm:hover { transform: none; }
   }
 }
+
+
+
+
+/* ══════════════════════════════════════════════════════════════
+   WELCOME DIALOG + MUSIC INLINE BUTTON
+   ─────────────────────────────────────────────────────────────
+   🛠 Đổi kích thước dialog : max-width trong .wc-box
+   🛠 Đổi màu nền dialog    : background trong .wc-box
+   🛠 Đổi khoảng cách nút loa: margin-right trong .music-inline-btn
+══════════════════════════════════════════════════════════════ */
+
+/* ─── OVERLAY ─────────────────────────────────────────────── */
+.wc-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  background: rgba(0, 0, 0, .78);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  opacity: 0;
+  animation: wcFadeIn .35s ease forwards;
+}
+@keyframes wcFadeIn { to { opacity: 1; } }
+
+.wc-overlay.wc-out {
+  animation: wcFadeOut .3s ease forwards;
+  pointer-events: none;
+}
+@keyframes wcFadeOut { to { opacity: 0; } }
+
+/* ─── DIALOG BOX ──────────────────────────────────────────── */
+.wc-box {
+  position: relative;
+  width: 100%;
+  max-width: 380px;
+  background: var(--dark2, #1c1912);
+  border: 1px solid rgba(200, 152, 30, .3);
+  overflow: hidden;
+  text-align: center;
+
+  /* Spring scale-in */
+  opacity: 0;
+  transform: scale(.84) translateY(24px);
+  animation: wcBoxIn .44s .07s cubic-bezier(.22,.68,0,1.28) forwards;
+}
+@keyframes wcBoxIn {
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+.wc-overlay.wc-out .wc-box {
+  animation: wcBoxOut .28s ease forwards;
+}
+@keyframes wcBoxOut {
+  to { opacity: 0; transform: scale(.91) translateY(12px); }
+}
+
+/* Dải vàng trên cùng */
+.wc-box::before {
+  content: '';
+  display: block;
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    var(--gold-dk, #a07a14),
+    var(--gold, #c8981e),
+    var(--gold-dk, #a07a14)
+  );
+}
+
+/* ─── NÚT ĐÓNG X ─────────────────────────────────────────── */
+.wc-x {
+  position: absolute;
+  top: 10px; right: 12px;
+  width: 28px; height: 28px;
+  background: none;
+  border: 1px solid rgba(154, 142, 122, .28);
+  border-radius: 3px;
+  cursor: pointer;
+  color: var(--muted, #9a8e7a);
+  font-size: 15px;
+  display: flex; align-items: center; justify-content: center;
+  transition: color .2s, border-color .2s, transform .15s;
+}
+.wc-x:hover { color: var(--gold, #c8981e); border-color: var(--gold, #c8981e); transform: scale(1.12); }
+.wc-x:active { transform: scale(.9); }
+.wc-x:focus-visible { outline: 2px solid var(--gold, #c8981e); outline-offset: 3px; }
+
+/* ─── INNER PADDING ───────────────────────────────────────── */
+.wc-inner { padding: 24px 30px 30px; }
+
+/* ─── DÒNG 1: LOGO placeholder ──────────────────────────── */
+.wc-logo-wrap {
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+}
+.wc-logo-img {
+  /* Ảnh thực: bỏ display:none khi logo tải được */
+  max-height: 52px;
+  width: auto;
+  max-width: 160px;
+  object-fit: contain;
+  /* Filter: logo nền trắng hình đen → tông vàng */
+  filter: invert(1) sepia(1) saturate(2) hue-rotate(4deg) brightness(.88);
+}
+.wc-logo-ph {
+  /* Placeholder hiện khi không có ảnh */
+  font-family: var(--font-display, 'Playfair Display', Georgia, serif);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(200, 152, 30, .45);
+  border: 1px dashed rgba(200, 152, 30, .3);
+  padding: 8px 16px;
+  border-radius: 2px;
+}
+
+/* ─── DÒNG 2: câu chào ────────────────────────────────────── */
+.wc-greeting {
+  font-family: var(--font-body, Inter, sans-serif);
+  font-size: clamp(11px, 2vw, 12px);
+  font-weight: 400;
+  letter-spacing: 1px;
+  color: var(--muted-lt, #b5a990);
+  margin: 0 0 10px;
+  line-height: 1.5;
+}
+
+/* ─── DÒNG 3: LAB héritage ────────────────────────────────── */
+.wc-brand {
+  font-family: var(--font-display, 'Playfair Display', Georgia, serif);
+  font-size: clamp(24px, 6vw, 30px);
+  font-weight: 700;
+  color: var(--cream, #f0e6cc);
+  margin: 0 0 2px;
+  line-height: 1.15;
+  letter-spacing: -.2px;
+}
+.wc-brand em {
+  font-style: italic;
+  color: var(--gold, #c8981e);
+}
+
+/* ─── DÒNG 4: Conserver la beauté ────────────────────────── */
+.wc-sub {
+  font-family: var(--font-ui, Inter, sans-serif);
+  font-size: clamp(9px, 2vw, 11px);
+  font-weight: 600;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--gold, #c8981e);
+  font-style: italic;
+  margin: 0 0 16px;
+}
+
+/* Divider mỏng vàng */
+.wc-rule {
+  height: 1px;
+  background: linear-gradient(
+    90deg, transparent,
+    rgba(200, 152, 30, .38),
+    transparent
+  );
+  margin: 0 0 14px;
+}
+
+/* ─── DÒNG 5: mô tả ngắn ─────────────────────────────────── */
+.wc-desc {
+  font-family: var(--font-body, Inter, sans-serif);
+  font-size: clamp(12px, 2.5vw, 13px);
+  line-height: 1.72;
+  color: var(--muted-lt, #b5a990);
+  margin: 0 0 22px;
+}
+.wc-desc strong { color: var(--cream2, #d8cab0); font-weight: 600; }
+
+/* ─── NÚT XÁC NHẬN ───────────────────────────────────────── */
+.wc-confirm {
+  display: block;
+  width: 100%;
+  padding: 12px 0;
+  background: var(--gold, #c8981e);
+  color: var(--black, #0a0906);
+  border: 2px solid var(--gold, #c8981e);
+  font-family: var(--font-ui, Inter, sans-serif);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background .22s, color .22s, transform .15s, box-shadow .22s;
+}
+.wc-confirm:hover {
+  background: transparent;
+  color: var(--gold, #c8981e);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(200, 152, 30, .26);
+}
+.wc-confirm:active  { transform: translateY(0); }
+.wc-confirm:focus-visible { outline: 2px solid var(--gold, #c8981e); outline-offset: 3px; }
+
+/* Ghi chú nhỏ */
+.wc-note {
+  font-family: var(--font-ui, Inter, sans-serif);
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--muted, #9a8e7a);
+  opacity: .65;
+  margin: 10px 0 0;
+}
+
+/* ─── RESPONSIVE ──────────────────────────────────────────── */
+@media (max-width: 440px) {
+  .wc-box   { max-width: 100%; }
+  .wc-inner { padding: 20px 20px 26px; }
+  .wc-brand { font-size: 22px; }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   MUSIC INLINE BUTTON — nút loa nằm cùng hàng với nút VI/EN
+   Được chèn vào DOM ngay trước #lang-btn bởi JavaScript.
+   🛠 Đổi khoảng cách phải: sửa margin-right
+   🛠 Đổi kích thước: sửa width/height
+══════════════════════════════════════════════════════════════ */
+.music-inline-btn {
+  /* Kích thước nhỏ — bằng nút VI/EN */
+  display:         inline-flex;
+  align-items:     center;
+  justify-content: center;
+  width:           34px;
+  height:          34px;
+  flex-shrink:     0;
+
+  /* Khoảng cách: 20px bên trái (tách khỏi nội dung nav),
+     12px bên phải (tách với lang-btn) */
+  margin-left:  250px;
+  margin-right: 12px;
+
+  /* Giao diện giống lang-btn */
+  background:    none;
+  border:        1px solid rgba(154, 142, 122, .32);
+  border-radius: 3px;
+  cursor:        pointer;
+  padding:       0;
+  color:         var(--muted, #9a8e7a);
+
+  /* Ẩn ban đầu — hiện sau dialog đóng */
+  opacity:        0;
+  pointer-events: none;
+  transform:      scale(.72);
+  transition: opacity .3s ease, transform .3s cubic-bezier(.22,.68,0,1.3),
+              color .2s, border-color .2s, box-shadow .2s;
+
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+/* Khi hiện ra (class .mib-on) */
+.music-inline-btn.mib-on {
+  opacity:        1;
+  pointer-events: all;
+  transform:      scale(1);
+}
+
+/* Hover */
+.music-inline-btn:hover {
+  color:        var(--gold, #c8981e);
+  border-color: var(--gold, #c8981e);
+  transform:    scale(1.1);
+  box-shadow:   0 0 10px rgba(200, 152, 30, .2);
+}
+.music-inline-btn.mib-on:hover { transform: scale(1.1); }
+.music-inline-btn:active        { transform: scale(.92) !important; }
+.music-inline-btn:focus-visible {
+  outline: 2px solid var(--gold, #c8981e);
+  outline-offset: 3px;
+}
+
+/* Đang phát → viền vàng sáng hơn */
+.music-inline-btn.mib-playing {
+  border-color: rgba(200, 152, 30, .55);
+  color:        var(--gold, #c8981e);
+}
+
+/* SVG icon */
+.music-inline-btn svg {
+  width:  17px;
+  height: 17px;
+  fill:   currentColor;
+  display: block;
+  flex-shrink: 0;
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .music-inline-btn {
+    width:        30px;
+    height:       30px;
+    margin-left:  12px;   /* mobile: khoảng cách nhỏ hơn */
+    margin-right: 8px;
+  }
+  .music-inline-btn svg { width: 15px; height: 15px; }
+}
