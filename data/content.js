@@ -3,19 +3,19 @@
  * ║  LAB héritage — data/content.js                             ║
  * ║  Dữ liệu nội dung song ngữ, không chứa logic xử lý         ║
  * ║                                                              ║
- * ║  ⭐ ĐÂY LÀ FILE DUY NHẤT CẦN SỬA ĐỂ CẬP NHẬT NỘI DUNG   ║
+ * ║  ⭐ ĐÂY LÀ FILE DUY NHẤT CẦN SỬA ĐỂ CẬP NHẬT NỘI DUNG        ║
  * ╠══════════════════════════════════════════════════════════════╣
- * ║  CÁCH THÊM ẢNH:                                             ║
- * ║   Đặt file vào images/ → điền đường dẫn vào trường img     ║
- * ║   Để rỗng "" nếu chưa có → tự hiện placeholder             ║
+ * ║  CÁCH THÊM ẢNH:                                              ║
+ * ║   Đặt file vào images/ → điền đường dẫn vào trường img       ║
+ * ║   Để rỗng "" nếu chưa có → tự hiện placeholder               ║
  * ║                                                              ║
- * ║  CÁCH THÊM BẢN DỊCH TIẾNG ANH:                             ║
- * ║   Thêm trường _en song song, ví dụ:                         ║
- * ║     title:    "Di Sản Văn Hoá",                             ║
- * ║     title_en: "Cultural Heritage",                          ║
+ * ║  CÁCH THÊM BẢN DỊCH TIẾNG ANH:                               ║
+ * ║   Thêm trường _en song song, ví dụ:                          ║
+ * ║     title:    "Di Sản Văn Hoá",                              ║
+ * ║     title_en: "Cultural Heritage",                           ║
  * ║                                                              ║
- * ║  CÁCH THÊM MODAL CHI TIẾT DỰ ÁN:                           ║
- * ║   Thêm trường detail và detail_en vào từng project          ║
+ * ║  CÁCH THÊM MODAL CHI TIẾT DỰ ÁN:                             ║
+ * ║   Thêm trường detail và detail_en vào từng project           ║
  * ╚══════════════════════════════════════════════════════════════╝
  */
 
@@ -193,40 +193,121 @@ const DATA = {
   ───────────────────────────────────────────────────────────── */
   services: [
     {
-      num:"01", icon:"🏛️",
+      num:"01", icon:"🏛️", img:"",   /* ← đặt đường dẫn ảnh tại đây, VD: "images/service-heritage.jpg" */
       title:"Di Sản Văn Hoá",       title_en:"Cultural Heritage",
       sub:"Heritage Conservation",
       desc:"Tôn vinh bản sắc, định hình di sản. Chỉ lấy chất bẩn, phục hồi cấu trúc hư hại, tuyệt đối không xóa Patina.",
       desc_en:"Honoring identity, defining heritage. Removing only dirt and restoring damaged structures, never erasing the Patina.",
       mats: ["Gỗ","Đá","Kim Loại","Vữa Truyền Thống","Vải Cổ"],
       mats_en: ["Wood","Stone","Metal","Traditional Mortar","Antique Fabric"],
+      /* ── Chi tiết hiện trong modal khi click vào card ──
+         Dùng HTML tự do: <p>, <ul><li>, <strong>, v.v.
+         Sửa trực tiếp tại đây để cập nhật nội dung.        */
+      detail: `
+        <p>Phục hồi các <strong>hiện vật, chất liệu truyền thống</strong> — gỗ, đá, kim loại, giấy, vải — theo đúng nguyên tắc bảo tồn quốc tế <strong>ICOMOS</strong>. Cam kết giữ nguyên kiến trúc, kết cấu, vật liệu và màu sắc gốc.</p>
+        <p>Đặc biệt, "màu thời gian" (Patina) — dấu tích vô giá của lịch sử — phải được tôn trọng tuyệt đối. Không xóa, không làm mới, chỉ bảo tồn và gia cố.</p>
+        <ul style="margin:14px 0 14px 20px;display:flex;flex-direction:column;gap:9px">
+          <li><strong>Vệ sinh chuyên sâu:</strong> Loại bỏ bụi bẩn, rêu mốc, lớp bảo vệ cũ hư hại mà không xâm hại cấu trúc gốc.</li>
+          <li><strong>Phục hồi cấu trúc:</strong> Gia cường các điểm yếu, bổ sung vật liệu nguyên bản theo tiêu chuẩn EN & ICOMOS.</li>
+          <li><strong>Bảo vệ lâu dài:</strong> Xử lý chống oxy hóa, ẩm, UV với sản phẩm 100% Châu Âu từ ALMA F.R.C. và KEIM.</li>
+        </ul>
+        <p style="color:var(--gold);font-weight:600">Tiêu chuẩn áp dụng: EN 16096 · ICOMOS Guidelines · ISO 15686</p>
+      `,
+      detail_en: `
+        <p>Restoration of <strong>traditional artifacts and materials</strong> — wood, stone, metal, paper, fabric — strictly following international <strong>ICOMOS</strong> conservation principles. Preserving original architecture, structure, materials, and color.</p>
+        <p>The "color of time" (Patina) — an invaluable historical trace — must be absolutely respected. No erasure, no renovation, only conservation and reinforcement.</p>
+        <ul style="margin:14px 0 14px 20px;display:flex;flex-direction:column;gap:9px">
+          <li><strong>Deep cleaning:</strong> Removing dirt, mold, and damaged protective layers without affecting the original structure.</li>
+          <li><strong>Structural restoration:</strong> Reinforcing weak points, replenishing original materials per EN & ICOMOS standards.</li>
+          <li><strong>Long-term protection:</strong> Anti-oxidation, moisture, UV treatment using 100% European products from ALMA F.R.C. and KEIM.</li>
+        </ul>
+        <p style="color:var(--gold);font-weight:600">Standards: EN 16096 · ICOMOS Guidelines · ISO 15686</p>
+      `,
     },
     {
-      num:"02", icon:"🏨",
+      num:"02", icon:"🏨", img:"",   /* ← "images/service-architecture.jpg" */
       title:"Công Trình Kiến Trúc",  title_en:"Architecture & Hospitality",
       sub:"Building · Resort · Villa",
       desc:"Ứng dụng kỹ thuật từ ALMA F.R.C và KEIM kéo dài tuổi thọ vật liệu, giảm chi phí bảo trì, khôi phục tính cốt lõi kiến trúc.",
       desc_en:"Leveraging ALMA F.R.C. and KEIM technology to extend material lifespan, reduce maintenance costs, and restore the core character of architecture.",
       mats: ["Bề Mặt Đá","Tường Gạch","Nội Thất Gỗ","Kim Loại"],
       mats_en: ["Stone Surfaces","Brick Wall","Wood Interiors","Metal"],
+      detail: `
+        <p>Trùng tu và gia cố các <strong>công trình cổ, biệt thự, resort, villa</strong> — sử dụng kỹ thuật ghép mộng, vữa cổ và vật liệu chuẩn Châu Âu. Ứng dụng sơn khoáng KEIM và hệ vật liệu ALMA F.R.C. để kéo dài tuổi thọ hàng thập kỷ.</p>
+        <ul style="margin:14px 0 14px 20px;display:flex;flex-direction:column;gap:9px">
+          <li><strong>Phục chế bề mặt đá & vữa:</strong> Phân tích thành phần, phối màu chính xác, phục hồi không để lại dấu vết can thiệp.</li>
+          <li><strong>Gỗ nội thất:</strong> Xử lý sinh học, gia cố epoxy chuyên dụng, lớp phủ "thở" tự nhiên ngăn nứt vỡ từ bên trong.</li>
+          <li><strong>Sơn khoáng KEIM:</strong> Liên kết hóa học vĩnh cửu với nền đá/gạch/bê tông, bền màu 100+ năm, không bong tróc.</li>
+        </ul>
+        <p style="color:var(--gold);font-weight:600">Tiêu chuẩn áp dụng: EN 16163 · ISO 16818 · ICOMOS Wood Guidelines</p>
+      `,
+      detail_en: `
+        <p>Rehabilitation and reinforcement of <strong>ancient buildings, villas, resorts</strong> — using mortise techniques, historic mortar, and European-grade materials. Applying KEIM mineral paint and ALMA F.R.C. systems for decades of extended lifespan.</p>
+        <ul style="margin:14px 0 14px 20px;display:flex;flex-direction:column;gap:9px">
+          <li><strong>Stone & mortar restoration:</strong> Composition analysis, precise color matching, restoration leaving no trace of intervention.</li>
+          <li><strong>Wood interiors:</strong> Biological treatment, specialized epoxy reinforcement, breathable coating preventing internal cracking.</li>
+          <li><strong>KEIM mineral paint:</strong> Permanent chemical bond with stone/brick/concrete substrate, colorfast 100+ years, never peels.</li>
+        </ul>
+        <p style="color:var(--gold);font-weight:600">Standards: EN 16163 · ISO 16818 · ICOMOS Wood Guidelines</p>
+      `,
     },
     {
-      num:"03", icon:"🛥️",
+      num:"03", icon:"🛥️", img:"",   /* ← "images/service-yacht.jpg" */
       title:"Du Thuyền & Ô Tô",     title_en:"Yacht & Luxury Vehicles",
       sub:"Yacht & Luxury Vehicles",
       desc:"Xử lý tác động của môi trường biển, bụi bẩn, ẩm ướt, ánh nắng. Chống oxy hóa, ăn mòn, lão hóa.",
       desc_en:"Combating the effects of marine environments, dust, moisture, and UV. Preventing oxidation, corrosion, and aging.",
       mats: ["Nhựa Composite","Gỗ Teak","Kim Loại","Da & Vải"],
       mats_en: ["Composite / Fiberglass","Teak Wood","Metal","Leather & Fabric"],
+      detail: `
+        <p>Bảo toàn giá trị bản thể của <strong>du thuyền và xe sang</strong> trong môi trường khắc nghiệt. Xử lý toàn diện tác động của muối biển, tia UV, độ ẩm và nhiệt độ cực đoan để giữ nguyên tính nguyên bản.</p>
+        <ul style="margin:14px 0 14px 20px;display:flex;flex-direction:column;gap:9px">
+          <li><strong>Thân composite & sợi thủy tinh:</strong> Đánh bóng, phủ lớp bảo vệ UV chống oxy hóa, phục hồi độ bóng nguyên bản.</li>
+          <li><strong>Boong teak:</strong> Cạo sạch, dưỡng dầu teak chuyên dụng ALMA F.R.C., chống nứt và bạc màu.</li>
+          <li><strong>Nội thất da & vải:</strong> Làm sạch sâu, phục hồi màu sắc, phủ bảo vệ chuyên dụng cho môi trường biển.</li>
+          <li><strong>Kim loại:</strong> Đánh bóng inox, phục hồi chrome, chống ăn mòn điện hóa do nước muối.</li>
+        </ul>
+        <p style="color:var(--gold);font-weight:600">Tiêu chuẩn áp dụng: ISO 11844-1 · ASTM G1 · AIC Leather Guidelines</p>
+      `,
+      detail_en: `
+        <p>Preserving the intrinsic value of <strong>yachts and luxury vehicles</strong> in harsh environments. Comprehensive treatment against saltwater, UV, humidity, and extreme temperatures to maintain authenticity.</p>
+        <ul style="margin:14px 0 14px 20px;display:flex;flex-direction:column;gap:9px">
+          <li><strong>Composite & fiberglass hull:</strong> Polishing, UV anti-oxidation protective coating, restoring original gloss.</li>
+          <li><strong>Teak decking:</strong> Stripping, ALMA F.R.C. specialist teak oil treatment, preventing cracking and silvering.</li>
+          <li><strong>Leather & fabric interiors:</strong> Deep cleaning, color restoration, marine-grade protective coating.</li>
+          <li><strong>Metal:</strong> Stainless steel polishing, chrome restoration, electrochemical corrosion protection.</li>
+        </ul>
+        <p style="color:var(--gold);font-weight:600">Standards: ISO 11844-1 · ASTM G1 · AIC Leather Guidelines</p>
+      `,
     },
     {
-      num:"04", icon:"👜",
+      num:"04", icon:"👜", img:"",   /* ← "images/service-fashion.jpg" */
       title:"Thời Trang Cao Cấp",   title_en:"Luxury Fashion Restoration",
       sub:"Luxury Fashion Restoration",
       desc:"Không làm mới hoàn toàn — khôi phục có chọn lọc. Từng vết xước, mép túi, khóa kim loại đều được xử lý bằng tay.",
       desc_en:"Not a complete overhaul — selective restoration. Every scratch, edge, and metal clasp is handled by hand.",
       mats: ["Da","Vải","Kim Loại","Vệ Sinh Sâu"],
       mats_en: ["Leather","Fabric","Metal","Deep Cleaning"],
+      detail: `
+        <p>Tinh chỉnh từng chi tiết của <strong>túi xách, giày, phụ kiện da cao cấp</strong> (Hermès, Louis Vuitton, Chanel, Gucci...). Không làm mới hoàn toàn — chỉ phục hồi có chọn lọc để giữ nguyên linh hồn và lịch sử của từng hiện vật.</p>
+        <ul style="margin:14px 0 14px 20px;display:flex;flex-direction:column;gap:9px">
+          <li><strong>Phân tích:</strong> Xác định thành phần da thuộc, pigment gốc, lịch sử sử dụng trước khi lên phương án phục chế.</li>
+          <li><strong>Làm sạch sâu:</strong> Loại bỏ bụi bẩn, dầu mỡ và lớp phủ cũ hỏng mà không làm tổn thương bề mặt da.</li>
+          <li><strong>Phục hồi màu sắc:</strong> Phối màu chính xác theo màu gốc, đảm bảo không lệch sắc sau khi hoàn thiện.</li>
+          <li><strong>Bảo vệ:</strong> Phủ lớp conditioner và bảo vệ chuyên dụng theo tiêu chuẩn AIC Leather Guidelines.</li>
+        </ul>
+        <p style="color:var(--gold);font-weight:600">Tiêu chuẩn áp dụng: AIC Leather Guidelines · ICOM-CC Modern Materials WG</p>
+      `,
+      detail_en: `
+        <p>Meticulous care for every detail of <strong>luxury bags, shoes, and leather accessories</strong> (Hermès, Louis Vuitton, Chanel, Gucci...). Not a complete overhaul — selective restoration to preserve the soul and history of each piece.</p>
+        <ul style="margin:14px 0 14px 20px;display:flex;flex-direction:column;gap:9px">
+          <li><strong>Analysis:</strong> Identifying leather tanning composition, original pigments, and usage history before developing a restoration plan.</li>
+          <li><strong>Deep cleaning:</strong> Removing dirt, grease, and damaged old coating without harming the leather surface.</li>
+          <li><strong>Color restoration:</strong> Precise color matching to the original shade, ensuring no color shift after completion.</li>
+          <li><strong>Protection:</strong> Specialist conditioner and protective coating per AIC Leather Guidelines standards.</li>
+        </ul>
+        <p style="color:var(--gold);font-weight:600">Standards: AIC Leather Guidelines · ICOM-CC Modern Materials WG</p>
+      `,
     },
   ],
 
@@ -348,10 +429,10 @@ const DATA = {
       bg:"linear-gradient(135deg,#0a100e,#101e1a)",
       detail:`
         <p style="color:var(--gold);font-size:11px;letter-spacing:2px;text-transform:uppercase;font-weight:700;margin-bottom:6px">LAB héritage / Giải Pháp Kiểm Soát Nhiệt</p>
-        <p>Giải pháp kiểm soát nhiệt toàn diện theo nguyên lý <strong>"Cool Roof & Cool Wall"</strong> — giảm nhiệt độ bề mặt tới 8–12°C, tiết kiệm 20–35% năng lượng làm mát.</p>
+        <p>Giải pháp kiểm soát nhiệt toàn diện - tán xạ nhiệt theo nguyên lý <strong>"Cool Roof & Cool Wall"</strong> — giảm nhiệt độ bề mặt tới 8–12°C, tiết kiệm 20–35% năng lượng làm mát.</p>
         <ul style="margin:12px 0 12px 18px;color:var(--muted-lt)">
           <li>Công nghệ: <strong>Vật liệu phản xạ nhiệt SRI cao</strong></li>
-          <li>Hiệu quả: <strong>Giảm 8–12°C, tiết kiệm 20–35% điện</strong></li>
+          <li>Hiệu quả: <strong>Giảm 8–12°C, tiết kiệm 20–35% điện năng</strong></li>
           <li>Tiêu chuẩn: <strong>ENERGY STAR® / LEED / ISO 16818</strong></li>
         </ul>
         <p style="color:var(--gold);font-weight:600">Bảo hành: 10 năm bề mặt ngoại thất.</p>

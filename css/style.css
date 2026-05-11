@@ -480,6 +480,40 @@ nav#nav.scrolled {
 .mat-chip:hover { border-color:rgba(200,152,30,.45); color:var(--muted-lt); }
 @media(max-width:768px) { .svc-grid { grid-template-columns:1fr; } }
 
+/* ── Svc card clickable — mở modal chi tiết ── */
+.svc-card.svc-clickable {
+  cursor: pointer;
+}
+.svc-card.svc-clickable:hover {
+  border-left-color: var(--gold);
+  background: #1f1c13;
+  transform: translateX(3px);
+}
+.svc-card.svc-clickable:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+}
+/* Hint "Xem chi tiết →" trượt vào khi hover */
+.svc-more-hint {
+  font-family:  var(--font-ui);
+  font-size:    9px;
+  font-weight:  700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color:    var(--gold);
+  margin-top: 16px;
+  display:  block;
+  opacity:  0;
+  transform: translateX(-8px);
+  transition:
+    opacity   var(--t-mid),
+    transform var(--t-mid);
+}
+.svc-card.svc-clickable:hover .svc-more-hint {
+  opacity:   1;
+  transform: translateX(0);
+}
+
 
 /* ═══════════════════════════════════════════════════════════════
    PROCESS
@@ -2318,8 +2352,8 @@ button:focus-visible,
 
   /* Khoảng cách: 20px bên trái (tách khỏi nội dung nav),
      12px bên phải (tách với lang-btn) */
-  margin-left:  250px;
-  margin-right: 12px;
+  margin-left:  20px;
+  margin-right: 1px;
 
   /* Giao diện giống lang-btn */
   background:    none;
@@ -2385,4 +2419,313 @@ button:focus-visible,
     margin-right: 8px;
   }
   .music-inline-btn svg { width: 15px; height: 15px; }
+}
+
+
+
+/* ══════════════════════════════════════════════════════════════
+   PATCH A — Tăng contrast "Công trình tiêu biểu"
+   Chữ trên overlay gradient tối cần sắc nét hơn
+══════════════════════════════════════════════════════════════ */
+.pi-name {
+  font-weight: 500;
+  color: #f5eedc;
+  text-shadow: 0 1px 6px rgba(0,0,0,.55);
+}
+.pi-desc { color: #c8bba8; }
+.pi-cat  { color: #d4a832; }
+.pi:hover .pi-name { color: #fff; }
+.pi:hover .pi-desc { color: #ddd0bb; }
+.pi-overlay {
+  background: linear-gradient(
+    to top,
+    rgba(0,0,0,.97) 0%,
+    rgba(0,0,0,.45) 48%,
+    transparent 100%
+  );
+}
+
+/* ══════════════════════════════════════════════════════════════
+   PATCH B — Ảnh trong Project Modal sắc nét hơn
+══════════════════════════════════════════════════════════════ */
+.proj-modal-img         { opacity: 1; background: var(--dark2, #1c1912); }
+.proj-modal-img > span  { opacity: .15; position: relative; z-index: 1; }
+.proj-modal-img img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  opacity: 1;
+  display: block;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  filter: none;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   DIALOG "4 LĨNH VỰC CHUYÊN BIỆT"
+   ─────────────────────────────────────────────────────────────
+   🛠 Đổi max-width dialog:  sửa max-width trong #domains-box
+   🛠 Đổi vị trí FAB:        sửa bottom/right trong #domains-fab
+══════════════════════════════════════════════════════════════ */
+
+/* ── Nút trigger FAB — góc phải dưới, trên Zalo/Call ──────── */
+#domains-fab {
+  position:    fixed;
+  bottom:      100px;       /* trên nút Zalo (bottom:26px + 56px + gap) */
+  right:       20px;
+  z-index:     990;
+
+  display:     inline-flex;
+  align-items: center;
+  gap:         7px;
+
+  background:  var(--dark2, #1c1912);
+  border:      1px solid rgba(200,152,30,.38);
+  border-radius: 3px;
+  color:       var(--gold, #c8981e);
+  font-family: var(--font-ui, Inter, sans-serif);
+  font-size:   10px; font-weight: 700;
+  letter-spacing: 1.8px; text-transform: uppercase;
+  padding:     9px 14px;
+  cursor:      pointer;
+  white-space: nowrap;
+  box-shadow:  0 4px 20px rgba(0,0,0,.4);
+
+  transition: background .2s, border-color .2s, transform .15s, box-shadow .2s;
+}
+#domains-fab:hover {
+  background:   rgba(200,152,30,.1);
+  border-color: var(--gold, #c8981e);
+  transform:    translateY(-2px);
+  box-shadow:   0 6px 26px rgba(0,0,0,.5), 0 0 0 1px rgba(200,152,30,.18);
+}
+#domains-fab:active { transform: translateY(0); }
+#domains-fab:focus-visible {
+  outline: 2px solid var(--gold, #c8981e);
+  outline-offset: 3px;
+}
+@media (max-width: 380px) {
+  #domains-fab { font-size: 9px; padding: 8px 10px; bottom: 88px; }
+}
+
+/* ── Overlay ────────────────────────────────────────────────── */
+#domains-overlay {
+  position:   fixed;
+  inset:      0;
+  z-index:    1800;
+  background: rgba(0,0,0,.76);
+  backdrop-filter:         blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  display:        flex;
+  align-items:    center;
+  justify-content: center;
+  padding:    20px;
+  overflow-y: auto;         /* scroll nếu viewport nhỏ */
+
+  opacity:   0;
+  animation: domOverlayIn .32s ease forwards;
+}
+@keyframes domOverlayIn { to { opacity: 1; } }
+#domains-overlay.dom-out {
+  animation: domOverlayOut .28s ease forwards;
+  pointer-events: none;
+}
+@keyframes domOverlayOut { to { opacity: 0; } }
+
+/* ── Dialog box ────────────────────────────────────────────── */
+#domains-box {
+  position:   relative;
+  width:      100%;
+  max-width:  520px;
+  max-height: 90vh;
+  overflow-y: auto;           /* scroll nội dung trên mobile */
+  background: var(--dark2, #1c1912);
+  border:     1px solid rgba(200,152,30,.28);
+
+  opacity:   0;
+  transform: scale(.86) translateY(22px);
+  animation: domBoxIn .4s .06s cubic-bezier(.22,.68,0,1.28) forwards;
+
+  /* Scrollbar mỏng */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(200,152,30,.3) transparent;
+}
+#domains-box::-webkit-scrollbar       { width: 4px; }
+#domains-box::-webkit-scrollbar-thumb { background: rgba(200,152,30,.3); border-radius: 2px; }
+@keyframes domBoxIn {
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+#domains-overlay.dom-out #domains-box {
+  animation: domBoxOut .26s ease forwards;
+}
+@keyframes domBoxOut {
+  to { opacity: 0; transform: scale(.91) translateY(10px); }
+}
+
+/* Dải vàng trên cùng */
+#domains-box::before {
+  content:    '';
+  display:    block;
+  height:     3px;
+  background: linear-gradient(90deg, var(--gold-dk,#a07a14), var(--gold,#c8981e), var(--gold-dk,#a07a14));
+}
+
+/* ── Nút đóng X ─────────────────────────────────────────────  */
+#domains-close {
+  position:   absolute;
+  top: 10px; right: 12px;
+  width:  30px; height: 30px;
+  background: none;
+  border:     1px solid rgba(154,142,122,.28);
+  border-radius: 3px;
+  cursor:     pointer;
+  color:      var(--muted, #9a8e7a);
+  font-size:  16px;
+  display:    flex; align-items: center; justify-content: center;
+  transition: color .2s, border-color .2s, transform .15s;
+  z-index:    2;
+}
+#domains-close:hover {
+  color:        var(--gold, #c8981e);
+  border-color: var(--gold, #c8981e);
+  transform:    scale(1.12) rotate(90deg);
+}
+#domains-close:active { transform: scale(.9); }
+#domains-close:focus-visible {
+  outline: 2px solid var(--gold, #c8981e);
+  outline-offset: 3px;
+}
+
+/* ── Inner padding ───────────────────────────────────────────  */
+.dom-inner { padding: 28px 32px 32px; }
+
+/* Label nhỏ uppercase */
+.dom-label {
+  font-family:     var(--font-ui, Inter, sans-serif);
+  font-size:       9px; font-weight: 700;
+  letter-spacing:  4px; text-transform: uppercase;
+  color:           var(--gold, #c8981e);
+  margin-bottom:   12px;
+  display:         flex; align-items: center; gap: 10px;
+}
+.dom-label::after { content:''; flex:1; height:1px; background: rgba(200,152,30,.28); }
+
+/* Tiêu đề dialog */
+.dom-title {
+  font-family: var(--font-display, 'Playfair Display', Georgia, serif);
+  font-size:   clamp(18px, 3vw, 23px);
+  font-weight: 600;
+  color:       var(--cream, #f0e6cc);
+  line-height: 1.25;
+  margin:      0 0 6px;
+}
+.dom-title em { font-style: italic; color: var(--gold, #c8981e); }
+
+/* Phụ đề tiếng Anh */
+.dom-subtitle {
+  font-family:     var(--font-ui, Inter, sans-serif);
+  font-size:       10px; font-weight: 600;
+  letter-spacing:  2.5px; text-transform: uppercase;
+  color:           var(--muted, #9a8e7a);
+  margin:          0 0 22px;
+  font-style:      italic;
+}
+
+/* Divider */
+.dom-rule {
+  height:     1px;
+  background: linear-gradient(90deg, transparent, rgba(200,152,30,.32), transparent);
+  margin:     0 0 18px;
+}
+
+/* ── Danh sách 4 lĩnh vực ─────────────────────────────────── */
+.dom-list { list-style: none; padding: 0; margin: 0 0 24px; }
+
+.dom-item {
+  display:    flex;
+  gap:        16px;
+  padding:    16px 0;
+  border-bottom: 1px solid rgba(200,152,30,.09);
+  transition: background .2s;
+}
+.dom-item:first-child { padding-top: 0; }
+.dom-item:last-child  { border-bottom: none; padding-bottom: 0; }
+.dom-item:hover {
+  background:   rgba(200,152,30,.04);
+  margin:       0 -10px;
+  padding-left:  10px;
+  padding-right: 10px;
+  border-radius: 2px;
+}
+
+/* Số thứ tự */
+.dom-num {
+  font-family: var(--font-display, 'Playfair Display', Georgia, serif);
+  font-size:   24px; font-weight: 400;
+  color:       rgba(200,152,30,.3);
+  line-height: 1;
+  flex-shrink: 0;
+  width:       28px; text-align: center;
+  margin-top:  3px;
+  transition:  color .2s;
+}
+.dom-item:hover .dom-num { color: rgba(200,152,30,.55); }
+
+/* Icon */
+.dom-icon {
+  font-size:   22px;
+  flex-shrink: 0;
+  margin-top:  2px;
+  transition:  transform .25s;
+}
+.dom-item:hover .dom-icon { transform: scale(1.15); }
+
+/* Text */
+.dom-content {}
+.dom-item-title {
+  font-family:  var(--font-ui, Inter, sans-serif);
+  font-size:    clamp(12.5px, 1vw, 13.5px);
+  font-weight:  700;
+  color:        var(--cream, #f0e6cc);
+  margin-bottom: 4px;
+  letter-spacing: .2px;
+}
+.dom-item-desc {
+  font-family: var(--font-body, Inter, sans-serif);
+  font-size:   clamp(11.5px, .9vw, 13px);
+  line-height: 1.7;
+  color:       var(--muted-lt, #b5a990);
+}
+.dom-item-desc strong { color: var(--cream2, #d8cab0); font-weight: 600; }
+
+/* ── Nút CTA ─────────────────────────────────────────────────  */
+.dom-cta {
+  display:      block; width: 100%;
+  padding:      12px 0;
+  background:   var(--gold, #c8981e);
+  color:        var(--black, #0a0906);
+  border:       2px solid var(--gold, #c8981e);
+  font-family:  var(--font-ui, Inter, sans-serif);
+  font-size:    10px; font-weight: 700;
+  letter-spacing: 3px; text-transform: uppercase;
+  cursor:       pointer;
+  text-align:   center; text-decoration: none;
+  transition:   background .2s, color .2s, transform .15s, box-shadow .2s;
+}
+.dom-cta:hover {
+  background: transparent; color: var(--gold, #c8981e);
+  transform:  translateY(-2px);
+  box-shadow: 0 6px 18px rgba(200,152,30,.24);
+}
+.dom-cta:active { transform: translateY(0); }
+.dom-cta:focus-visible { outline: 2px solid var(--gold, #c8981e); outline-offset: 3px; }
+
+/* ── Responsive mobile ─────────────────────────────────────── */
+@media (max-width: 520px) {
+  #domains-box  { max-width: 100%; max-height: 88vh; }
+  .dom-inner    { padding: 22px 20px 26px; }
+  .dom-title    { font-size: 18px; }
+  .dom-item     { gap: 12px; }
+  .dom-num      { font-size: 20px; width: 22px; }
 }

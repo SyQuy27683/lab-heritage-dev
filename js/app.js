@@ -195,8 +195,15 @@ function renderAbout() {
 function renderServices() {
   const el = document.getElementById('svc-grid');
   if (!el) return;
-  el.innerHTML = DATA.services.map((s, i) => `
-    <div class="svc-card reveal${i % 2 === 1 ? ' delay1' : ''}">
+  el.innerHTML = DATA.services.map((s, i) => {
+    /* Chỉ thêm cursor + hint khi có nội dung detail */
+    const hasDetail = !!(s.detail || s.detail_en);
+    const detailHint = hasDetail
+      ? `<div class="svc-more-hint" data-vi="Xem chi tiết →" data-en="Learn more →">Xem chi tiết →</div>`
+      : '';
+    return `
+    <div class="svc-card reveal${i % 2 === 1 ? ' delay1' : ''}${hasDetail ? ' svc-clickable' : ''}"
+         ${hasDetail ? `data-svc-index="${i}" role="button" tabindex="0" aria-label="${escapeAttr(s.title)}"` : ''}>
       <div class="svc-num">${s.num}</div>
       <span class="svc-icon">${s.icon}</span>
       <div class="svc-title" data-vi="${escapeAttr(s.title)}" data-en="${escapeAttr(s.title_en || s.title)}">${s.title}</div>
@@ -208,8 +215,80 @@ function renderServices() {
           return `<span class="mat-chip" data-vi="${escapeAttr(m)}" data-en="${escapeAttr(m_en)}">${m}</span>`;
         }).join('')}
       </div>
+      ${detailHint}
     </div>
-  `).join('');
+  `}).join('');
+
+  /* Gắn click event cho các card có detail — dùng lại modal của project */
+  el.querySelectorAll('.svc-clickable[data-svc-index]').forEach(card => {
+    const open = () => {
+      const idx = parseInt(card.dataset.svcIndex);
+      openServiceModal(idx);
+    };
+    card.addEventListener('click', open);
+    /* Keyboard: Enter hoặc Space cũng mở */
+    card.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); }
+    });
+  });
+}
+
+/* ── Mở modal cho 1 lĩnh vực ──
+   Tái sử dụng proj-modal-overlay hiện có, chỉ điền nội dung khác  */
+function openServiceModal(idx) {
+  const s    = DATA.services[idx];
+  const isEn = currentLang === 'en';
+  if (!s || !_modalEl) return;
+
+  const catEl    = document.getElementById('proj-modal-cat');
+  const nameEl   = document.getElementById('proj-modal-name');
+  const descEl   = document.getElementById('proj-modal-desc');
+  const detailEl = document.getElementById('proj-modal-detail');
+  const imgEl    = document.getElementById('proj-modal-img');
+  const closeBtn = document.getElementById('proj-modal-close-btn');
+
+  if (closeBtn) {
+    closeBtn.setAttribute('aria-label', isEn ? 'Close' : 'Đóng');
+    closeBtn.onclick = closeModal;
+  }
+
+  /* Số thứ tự làm "category" */
+  if (catEl)  catEl.textContent  = `${isEn ? 'Field' : 'Lĩnh Vực'} ${s.num}`;
+  if (nameEl) nameEl.textContent = isEn ? (s.title_en || s.title) : s.title;
+  /* Sub làm "desc" */
+  if (descEl) descEl.textContent = isEn ? (s.sub_en || s.sub) : s.sub;
+
+  /* Nội dung chi tiết */
+  if (detailEl) {
+    detailEl.innerHTML = (isEn && s.detail_en) ? s.detail_en
+                        : s.detail ? s.detail
+                        : `<p style="color:var(--muted)">${isEn ? 'Contact us for details.' : 'Vui lòng liên hệ để biết thêm.'}</p>`;
+  }
+
+  /* Ảnh: dùng s.img nếu có, fallback icon
+     Thêm img vào DATA.services trong content.js:
+       img: "images/ten-hinh.jpg"   ← để "" nếu chưa có  */
+  if (imgEl) {
+    imgEl.style.background = 'linear-gradient(135deg,var(--dark2),var(--dark))';
+    if (s.img) {
+      imgEl.innerHTML = `<img src="${s.img}" alt="${isEn ? (s.title_en||s.title) : s.title}"
+                              onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+                         <span style="font-size:72px;opacity:.18;position:relative;z-index:1;display:none">${s.icon}</span>`;
+    } else {
+      imgEl.innerHTML = `<span style="font-size:72px;opacity:.18;position:relative;z-index:1">${s.icon}</span>`;
+    }
+  }
+
+  /* Sync nút Đóng/Close cuối modal */
+  const closeBtm = document.getElementById('proj-modal-close-bottom');
+  if (closeBtm) closeBtm.textContent = isEn ? 'Close' : 'Đóng';
+
+  /* Lưu để sync khi đổi ngôn ngữ */
+  window._currentServiceIndex = idx;
+
+  _modalEl.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  setTimeout(() => closeBtn?.focus(), 60);
 }
 
 /* ── Process steps ── */
@@ -1051,6 +1130,10 @@ function initModal() {
         <h2                            id="proj-modal-name"></h2>
         <div class="proj-modal-desc"   id="proj-modal-desc"></div>
         <div class="proj-modal-detail" id="proj-modal-detail"></div>
+        <div class="ins-modal-footer">
+          <button class="ins-modal-close-bottom" id="proj-modal-close-bottom"
+                  type="button" data-vi="Đóng" data-en="Close">Đóng</button>
+        </div>
       </div>
     </div>
   `;
@@ -1060,6 +1143,10 @@ function initModal() {
     if (e.target === _modalEl) closeModal();
   });
   document.getElementById('proj-modal-close-btn').addEventListener('click', e => {
+    e.stopPropagation();
+    closeModal();
+  });
+  document.getElementById('proj-modal-close-bottom').addEventListener('click', e => {
     e.stopPropagation();
     closeModal();
   });
@@ -1090,6 +1177,13 @@ function openModal(project) {
 }
 
 function updateModalContent(project) {
+  /* Nếu modal đang hiện cho service (lĩnh vực), sync đó thay vì project */
+  if (window._currentServiceIndex !== undefined && window._currentServiceIndex !== null
+      && !project) {
+    openServiceModal(window._currentServiceIndex);
+    return;
+  }
+
   const isEn = currentLang === 'en';
   const L = DATA.ui_labels;
 
@@ -1103,8 +1197,10 @@ function updateModalContent(project) {
   
   if (closeBtn) {
     closeBtn.setAttribute('aria-label', isEn ? 'Close' : 'Đóng');
-    closeBtn.onclick = closeModal;   // thêm dòng này
-  };
+    closeBtn.onclick = closeModal;
+  }
+  const projCloseBtm = document.getElementById('proj-modal-close-bottom');
+  if (projCloseBtm) projCloseBtm.textContent = isEn ? 'Close' : 'Đóng';
   if (catEl)  catEl.textContent  = isEn ? (project.cat_en  || project.cat)  : project.cat;
   if (nameEl) nameEl.textContent = isEn ? (project.name_en || project.name) : project.name;
   if (descEl) descEl.textContent = isEn ? (project.desc_en || project.desc) : project.desc;
@@ -1392,34 +1488,34 @@ function initForm() {
   /* ── Cấu hình ──────────────────────────────────────────────
      Sửa các biến này để tuỳ chỉnh                            */
   var MUSIC_SRC = 'audio/nhac.mp3';
-  var MUSIC_VOL = 0.3;
+  var MUSIC_VOL = 0.35;
   var LOGO_SRC  = 'images/logo-lab1.png';   /* '' = ẩn ảnh logo   */
 
-  /* ── Nội dung song ngữ ─────────────────────────────────────
+    /* ── Nội dung song ngữ ─────────────────────────────────────
      Mỗi dòng trong dialog tương ứng một key                  */
-  var WC_TEXT = {
-    vi: {
-      greeting:   'Chào mừng bạn đến với website chúng tôi',
-      brand:      'LAB <em>héritage</em>',   /* HTML — em = italic vàng */
-      sub:        'Conserver la beauté',
-      desc:       'Chuyên <strong>phục dựng</strong> – <strong>phục chế</strong> di sản văn hoá, công trình kiến trúc',
-      btn:        'Xác Nhận',
-      note:       '♪ Nhạc nền sẽ phát sau khi xác nhận',
-      close_aria: 'Đóng',
-      play_aria:  'Bật nhạc nền',
-      pause_aria: 'Tắt nhạc nền',
-    },
-    en: {
-      greeting:   'Welcome to our website',
-      brand:      'LAB <em>héritage</em>',
-      sub:        'Preserving Beauty',
-      desc:       'Specializing in <strong>restoration</strong> &amp; <strong>conservation</strong> of cultural heritage and architecture',
-      btn:        'Confirm',
-      note:       '♪ Background music will play after you confirm',
-      close_aria: 'Close',
-      play_aria:  'Play background music',
-      pause_aria: 'Pause background music',
-    },
+     var WC_TEXT = {
+      vi: {
+        greeting:   'Chào mừng bạn đến với website',
+        brand:      'LAB <em>héritage</em>',   /* HTML — em = italic vàng */
+        sub:        'Conserver la beauté',
+        desc:       'Nơi mọi giải pháp khác dừng lại -<br> <strong>LAB héritage</strong> bắt đầu',
+        btn:        'Here we go',
+        note:       '♪ Nhạc nền sẽ phát sau khi xác nhận',
+        close_aria: 'Đóng',
+        play_aria:  'Bật nhạc nền',
+        pause_aria: 'Tắt nhạc nền',
+      },
+      en: {
+        greeting:   'Welcome to our website',
+        brand:      'LAB <em>héritage</em>',
+        sub:        'Preserving Beauty',
+        desc:       'Where all other solutions stop - <br><strong> LAB héritage</strong> begins',
+        btn:        'Confirm',
+        note:       '♪ Background music will play after you confirm',
+        close_aria: 'Close',
+        play_aria:  'Play background music',
+        pause_aria: 'Pause background music',
+      },
   };
 
   /* ── SVG icons ─────────────────────────────────────────────*/
