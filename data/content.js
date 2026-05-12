@@ -170,13 +170,15 @@ const DATA = {
     img: "images/team.svg",
     paragraphs: [
       `Với hơn <strong>5 năm kinh nghiệm</strong> và hơn <strong>10.000 vật phẩm cao cấp</strong> đã được xử lý, LAB héritage là đơn vị tiên phong kết hợp nghệ thuật thủ công và công nghệ hiện đại trong phục dựng — phục chế.`,
+      `Đặc biệt, <strong>LAB héritage</strong> tự hào là <strong>đối tác chiến lược và đơn vị độc quyền</strong> tại Việt Nam của tập đoàn <strong>ALMA F.R.C 🇫🇷</strong> và tập đoàn <strong>KEIM 🇩🇪</strong> — những biểu tượng hàng đầu Châu Âu về giải pháp bảo tồn di sản.`,
       `Cam kết giữ nguyên <strong>kiến trúc – kết cấu – vật liệu – màu sắc. "Màu thời gian" (Patina)</strong> — dấu tích vô giá của lịch sử — phải được tôn trọng tuyệt đối.`,
-      `Toàn bộ quy trình được <strong>tư vấn và đào tạo bởi chuyên gia Châu Âu</strong>. Xưởng sản xuất tại Củ Chi rộng hơn <strong>2.000m²</strong> với đội ngũ 50+ nhân sự.`,
+      `Toàn bộ quy trình được <strong>tư vấn và đào tạo trực tiếp bởi chuyên gia từ tập đoàn</strong>. Xưởng sản xuất tại Củ Chi rộng hơn <strong>2.000m²</strong> với đội ngũ 50+ nhân sự lành nghề.`,
     ],
     paragraphs_en: [
       `With over <strong>5 years of experience</strong> and more than <strong>10,000 premium items</strong> treated, LAB héritage pioneers the fusion of fine craftsmanship and modern European technology in restoration.`,
+      `Notably, <strong>LAB héritage</strong> is the <strong>exclusive partner</strong> in Vietnam for the <strong>ALMA F.R.C 🇫🇷</strong> and <strong>KEIM 🇩🇪</strong> Groups — Europe's leading authorities in heritage conservation solutions.`,
       `We commit to preserving <strong>architecture – structure – materials – color. "Patina"</strong> — the invaluable trace of time — must be absolutely respected.`,
-      `All processes are <strong>advised and trained by European experts</strong>. Our warehouse in Củ Chi spans <strong>2,000m²</strong> with 50+ specialists.`,
+      `All processes are <strong>advised and trained directly by experts from our partner groups</strong>. Our facility in Cu Chi spans <strong>2,000m²</strong> with 50+ dedicated specialists.`,
     ],
     stats: [
       { n:"10.000+", l:"Vật phẩm xử lý",    l_en:"Items restored"     },
@@ -184,8 +186,8 @@ const DATA = {
       { n:"5+",      l:"Năm kinh nghiệm",    l_en:"Years experience"   },
       { n:"2.000m²", l:"Xưởng tại Củ Chi",   l_en:"Warehouse in Củ Chi" },
     ],
-    products: ["ALMA F.R.C. — EPV Award", "KEIM — Sơn Khoáng Đức", "Phân Phối Bởi Cleanco", "Bền Trên 100 Năm"],
-    products_en: ["ALMA F.R.C. — EPV Award", "KEIM — German Mineral Paint", "Distributed by Cleanco", "Over 100 Years Durability"],
+    products: ["ALMA F.R.C. — EPV Award", "KEIM — Sơn Khoáng Đức", "Phân Phối Bởi Cleanco", "Bền Trên 100 Năm", "Sản Phẩm Độc Quyền"],
+    products_en: ["ALMA F.R.C. — EPV Award", "KEIM — German Mineral Paint", "Distributed by Cleanco", "Over 100 Years Durability", "Exclusive Product"],
   },
 
   /* ─────────────────────────────────────────────────────────────

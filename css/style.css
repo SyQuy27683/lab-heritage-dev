@@ -2729,3 +2729,327 @@ button:focus-visible,
   .dom-item     { gap: 12px; }
   .dom-num      { font-size: 20px; width: 22px; }
 }
+
+
+/* ══════════════════════════════════════════════════════════════
+   UX ENHANCEMENT — Logo & Navbar size
+   ─────────────────────────────────────────────────────────────
+   Override các giá trị gốc để tăng khả năng đọc và touch target.
+   🛠 Chỉnh logo to/nhỏ:  sửa clamp() trong .nav-logo img
+   🛠 Chỉnh chữ brand:    sửa clamp() trong .nav-logo-text .brand
+   🛠 Chỉnh chữ nav:      sửa clamp() trong .nav-links a
+══════════════════════════════════════════════════════════════ */
+
+/* ── Logo: tăng từ clamp(34px,3.5vw,48px) → clamp(42px,4.2vw,58px) ──
+   Tương đương +20-25% so với kích thước gốc                       */
+.nav-logo img {
+  height: clamp(42px, 4.2vw, 58px);
+}
+
+/* ── Tên thương hiệu "LAB héritage": 17-21px → 20-26px ──
+   Tăng font-weight lên 500 để chữ nổi bật hơn trên nền tối       */
+.nav-logo-text .brand {
+  font-size:   clamp(20px, 1.9vw, 26px);
+  font-weight: 500;
+}
+
+/* Tagline "Conserver la beauté": tăng nhẹ để dễ đọc hơn */
+.nav-logo-text .tagline {
+  font-size: clamp(8px, .65vw, 9.5px);
+  letter-spacing: 3px;
+}
+
+/* Gap giữa logo ảnh và text: tăng nhẹ cho cân đối */
+.nav-logo { gap: 16px; }
+
+/* ── Nav links: 9-10.5px → 11-13px (tăng ~25%) ──
+   Giữ nguyên letter-spacing, color, hover — chỉ đổi size + padding */
+.nav-links a {
+  font-size: clamp(11px, .88vw, 13px);
+  padding-top:    8px;   /* touch target cao hơn */
+  padding-bottom: 8px;
+}
+
+/* ── Nav CTA button: 9-10px → 10.5-12px ── */
+.nav-cta {
+  font-size: clamp(10.5px, .82vw, 12px);
+  padding:   10px 20px;   /* vùng chạm rộng hơn */
+}
+
+/* ── Khoảng cách giữa các mục: thu hẹp nhẹ để không tràn khi chữ lớn hơn ── */
+.nav-links { gap: clamp(14px, 2vw, 30px); }
+
+/* ══════════════════════════════════════════════════════════════
+   RESPONSIVE — đảm bảo không vỡ layout
+══════════════════════════════════════════════════════════════ */
+
+/* Tablet (961px–1200px): logo vừa phải, nav links không tràn */
+@media (max-width: 1200px) and (min-width: 961px) {
+  .nav-logo img            { height: clamp(38px, 3.8vw, 50px); }
+  .nav-logo-text .brand    { font-size: clamp(18px, 1.7vw, 22px); }
+  .nav-links a             { font-size: clamp(10px, .82vw, 12px); }
+  .nav-links               { gap: clamp(12px, 1.6vw, 24px); }
+}
+
+/* Mobile (≤960px): nav links ẩn, chỉ logo + hamburger hiện
+   → logo có thể to hơn vì không cạnh tranh với nav items       */
+@media (max-width: 960px) {
+  .nav-logo img         { height: clamp(38px, 6vw, 48px); }
+  .nav-logo-text .brand { font-size: clamp(19px, 4vw, 24px); }
+  .nav-logo             { gap: 12px; }
+}
+
+/* Màn hình rất nhỏ (≤380px): thu nhỏ logo vừa đủ */
+@media (max-width: 380px) {
+  .nav-logo img         { height: 36px; }
+  .nav-logo-text .brand { font-size: 17px; }
+  .nav-logo             { gap: 10px; }
+}
+
+
+/* ══════════════════════════════════════════════════════════════
+   EXCLUSIVE PARTNER BANNER
+   "LAB héritage — Đối tác độc quyền ALMA F.R.C. & KEIM"
+   ─────────────────────────────────────────────────────────────
+   Đặt ngay trên 2 brand card trong section "Sử Dụng Sản Phẩm".
+   Tự đồng bộ Vi/En qua data-vi / data-en (enhance.js).
+   🛠 Đổi màu chữ:      sửa color trong .excl-vi
+   🛠 Đổi tốc độ glow:  sửa duration trong @keyframes exclGlow
+   🛠 Đổi tốc độ pulse: sửa duration trong @keyframes exclDot
+══════════════════════════════════════════════════════════════ */
+
+/* ── Wrapper toàn banner ── */
+.excl-banner {
+  width:         100%;
+  margin-bottom: clamp(24px, 3vw, 36px);
+  display:       flex;
+  justify-content: center;
+}
+
+/* ── Inner: viền vàng gradient, nền tối sang trọng ── */
+.excl-inner {
+  display:     inline-flex;
+  align-items: center;
+  gap:         16px;
+
+  padding:     14px 28px;
+  border:      1px solid rgba(200, 152, 30, .45);
+  background:  linear-gradient(
+    135deg,
+    rgba(200, 152, 30, .07) 0%,
+    rgba(200, 152, 30, .03) 50%,
+    rgba(200, 152, 30, .07) 100%
+  );
+  position:    relative;
+  overflow:    hidden;
+
+  /* Glow pulse nhẹ — sang trọng, không lòe loẹt */
+  animation: exclGlow 4s ease-in-out infinite;
+}
+
+/* Pseudo-element: đường sáng trượt qua mỗi 4s */
+.excl-inner::before {
+  content:    '';
+  position:   absolute;
+  top:        0; left: -120%;
+  width:      80%; height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(200, 152, 30, .12),
+    transparent
+  );
+  animation: exclShimmer 4s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* Glow nhẹ toàn khối */
+@keyframes exclGlow {
+  0%,  100% { box-shadow: 0 0 0   0    rgba(200,152,30,.0),
+                           inset 0 0 0  0   rgba(200,152,30,.0); }
+  50%        { box-shadow: 0 0 18px 1px rgba(200,152,30,.18),
+                           inset 0 0 20px 0 rgba(200,152,30,.04); }
+}
+
+/* Ánh sáng trượt qua */
+@keyframes exclShimmer {
+  0%   { left: -120%; opacity: 0; }
+  20%  { opacity: 1; }
+  60%  { left:  120%; opacity: 0; }
+  100% { left:  120%; opacity: 0; }
+}
+
+/* ── Chữ chính ── */
+.excl-vi {
+  font-family:  var(--font-ui, Inter, sans-serif);
+  font-size:    clamp(11px, 1vw, 13.5px);
+  font-weight:  700;
+  letter-spacing: 1.5px;
+  line-height:  1.5;
+  text-align:   center;
+  white-space:  nowrap;
+
+  /* Màu: gradient vàng → kem → vàng */
+  background: linear-gradient(
+    90deg,
+    var(--gold-lt, #d4aa4a),
+    var(--cream,   #f0e6cc) 45%,
+    var(--cream,   #f0e6cc) 55%,
+    var(--gold-lt, #d4aa4a)
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip:          text;
+  -webkit-text-fill-color:  transparent;
+  color: var(--cream, #f0e6cc); /* fallback cho browser cũ */
+
+  /* Gradient text chạy nhẹ */
+  animation: exclTextFlow 6s linear infinite;
+}
+
+@keyframes exclTextFlow {
+  0%   { background-position: 200% center; }
+  100% { background-position: -200% center; }
+}
+
+/* ── Dot trang trí hai đầu — nhấp nháy lệch pha ── */
+.excl-dot {
+  display:       block;
+  width:         6px;
+  height:        6px;
+  border-radius: 50%;
+  background:    var(--gold, #c8981e);
+  flex-shrink:   0;
+  animation:     exclDot 2.4s ease-in-out infinite;
+}
+.excl-dot:last-child {
+  animation-delay: 1.2s; /* lệch pha — "nhịp thở" hai chiều */
+}
+
+@keyframes exclDot {
+  0%,  100% { opacity: .35; transform: scale(.75); }
+  50%        { opacity: 1;   transform: scale(1.25); box-shadow: 0 0 6px rgba(200,152,30,.7); }
+}
+
+/* ── Hover: scale nhẹ + border sáng hơn ── */
+.excl-banner:hover .excl-inner {
+  border-color: rgba(200, 152, 30, .75);
+  transform:    scale(1.015);
+  transition:   border-color .3s ease, transform .3s ease;
+}
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+  .excl-inner {
+    padding:    11px 18px;
+    gap:        10px;
+  }
+  .excl-vi {
+    font-size:   10.5px;
+    letter-spacing: 1px;
+    /* Wrap trên mobile thay vì overflow */
+    white-space: normal;
+    text-align:  center;
+  }
+  /* Ẩn dot trên mobile rất nhỏ để không chật */
+  @media (max-width: 360px) {
+    .excl-dot { display: none; }
+  }
+}
+
+
+/* ══════════════════════════════════════════════════════════════
+   ABOUT — Câu nhấn mạnh "Đối tác độc quyền ALMA F.R.C. & KEIM"
+   Chỉ áp dụng cho đoạn thứ 2 (.about-para-highlight).
+   🛠 Đổi tốc độ pulse: sửa duration @keyframes apHighlight
+   🛠 Tắt animation:    xóa dòng animation: apHighlight ...
+══════════════════════════════════════════════════════════════ */
+
+.about-para-highlight {
+  /* ── Phân biệt rõ với các đoạn bình thường ── */
+  position:   relative;
+  padding:    16px 20px 16px 18px;
+  margin:     4px 0 18px;
+
+  /* Viền trái vàng dày */
+  border-left: 3px solid var(--gold, #c8981e);
+
+  /* Nền gradient cực nhạt — không át nội dung */
+  background: linear-gradient(
+    135deg,
+    rgba(200, 152, 30, .07) 0%,
+    rgba(200, 152, 30, .02) 100%
+  );
+
+  /* Chữ sáng hơn đoạn thường */
+  color: var(--cream2, #ddd0b8) !important;
+  font-size: clamp(13.5px, 1.05vw, 15px);
+  line-height: 1.85;
+
+  /* Pulse nhẹ lặp lại — sang trọng, không lòe loẹt */
+  animation: apHighlight 4s ease-in-out infinite;
+}
+
+/* Đường kẻ sáng trượt qua mỗi 5s */
+.about-para-highlight::after {
+  content:    '';
+  position:   absolute;
+  top: 0; left: -80%;
+  width: 60%; height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(200, 152, 30, .09),
+    transparent
+  );
+  animation: apShimmer 5s ease-in-out infinite 1.5s;
+  pointer-events: none;
+}
+
+/* ── strong bên trong: chữ vàng nổi bật ── */
+.about-para-highlight strong {
+  color:        var(--gold-lt, #d4a832);
+  font-weight:  700;
+  /* Không đổi màu hover để không phân tâm */
+}
+
+/* ── Pulse: glow viền trái + shadow nhẹ ── */
+@keyframes apHighlight {
+  0%,  100% {
+    box-shadow:  -3px 0 0 0 rgba(200,152,30,.0),
+                  0   0 0 0 rgba(200,152,30,.0);
+    border-left-color: rgba(200,152,30,.55);
+  }
+  50% {
+    box-shadow:  -3px 0 12px 0 rgba(200,152,30,.22),
+                  0   0 18px 2px rgba(200,152,30,.08);
+    border-left-color: rgba(200,152,30,1);
+  }
+}
+
+/* ── Shimmer chạy qua ── */
+@keyframes apShimmer {
+  0%   { left: -80%;  opacity: 0; }
+  15%  { opacity: 1; }
+  55%  { left:  110%; opacity: 0; }
+  100% { left:  110%; opacity: 0; }
+}
+
+/* ── Hover: scale nhẹ + sáng hơn ── */
+.about-para-highlight:hover {
+  background: linear-gradient(
+    135deg,
+    rgba(200, 152, 30, .11) 0%,
+    rgba(200, 152, 30, .04) 100%
+  );
+  transform:  translateX(2px);
+  transition: background .3s ease, transform .25s ease;
+}
+
+/* ── Mobile: thu padding ── */
+@media (max-width: 600px) {
+  .about-para-highlight {
+    padding:   13px 14px 13px 14px;
+    font-size: 13px;
+  }
+}

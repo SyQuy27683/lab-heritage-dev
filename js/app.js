@@ -149,7 +149,9 @@ function renderAbout() {
     : '';
   const parasHtml = a.paragraphs.map((p, i) => {
     const p_en = a.paragraphs_en?.[i] || p;
-    return `<p class="about-para" data-vi="${escapeAttr(p)}" data-en="${escapeAttr(p_en)}">${p}</p>`;
+    /* Đoạn index 1 = câu đối tác độc quyền → class đặc biệt */
+    const cls = i === 1 ? 'about-para about-para-highlight' : 'about-para';
+    return `<p class="${cls}" data-vi="${escapeAttr(p)}" data-en="${escapeAttr(p_en)}">${p}</p>`;
   }).join('');
   const statsHtml = a.stats.map(s =>
     `<div class="stat-box"><div class="n">${s.n}</div><div class="l" data-vi="${s.l}" data-en="${s.l_en || s.l}">${s.l}</div></div>`
@@ -476,6 +478,29 @@ function renderBrandSection() {
   const grid = document.getElementById('brand-section-grid');
   if (!grid) return;
   const L = DATA.ui_labels;
+
+  /* ── Exclusive Partner Banner ──
+     Chèn ngay trước grid các brand card.
+     Banner tự xử lý ngôn ngữ qua data-vi / data-en
+     (applyLang() trong enhance.js sẽ sync tự động).    */
+  const banner = document.createElement('div');
+  banner.id = 'exclusive-banner';
+  banner.className = 'excl-banner reveal';
+  banner.innerHTML = `
+    <div class="excl-inner">
+      <span class="excl-dot" aria-hidden="true"></span>
+      <div class="excl-text">
+        <span class="excl-vi"
+              data-vi="LAB héritage — Đối tác độc quyền của ALMA F.R.C. &amp; KEIM tại Việt Nam"
+              data-en="LAB héritage — Exclusive Partner of ALMA F.R.C. &amp; KEIM in Vietnam">
+          LAB héritage — Đối tác độc quyền của ALMA F.R.C. &amp; KEIM tại Việt Nam
+        </span>
+      </div>
+      <span class="excl-dot" aria-hidden="true"></span>
+    </div>
+  `;
+  /* Chèn trước grid (brand-section-grid) */
+  grid.parentNode.insertBefore(banner, grid);
 
   grid.innerHTML = DATA.brands.map((b, i) => `
     <div class="brd-card reveal${i === 1 ? ' delay2' : ''}"
@@ -1488,7 +1513,7 @@ function initForm() {
   /* ── Cấu hình ──────────────────────────────────────────────
      Sửa các biến này để tuỳ chỉnh                            */
   var MUSIC_SRC = 'audio/nhac.mp3';
-  var MUSIC_VOL = 0.35;
+  var MUSIC_VOL = 0.3;
   var LOGO_SRC  = 'images/logo-lab1.png';   /* '' = ẩn ảnh logo   */
 
     /* ── Nội dung song ngữ ─────────────────────────────────────
