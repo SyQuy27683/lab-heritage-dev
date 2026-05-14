@@ -1,15 +1,4 @@
 <!DOCTYPE html>
-<!--
-  ╔══════════════════════════════════════════════════════════════╗
-  ║  LAB héritage — index.html                                   ║
-  ║  Cấu trúc chính của trang:                                   ║
-  ║  header · hero · dự án tiêu biểu · câu chuyện minh chứng     ║
-  ║  form liên hệ · footer                                       ║
-  ║                                                              ║
-  ║                                                              ║
-  ║                                                              ║
-  ╚══════════════════════════════════════════════════════════════╝
--->
 <html lang="vi">
 <head>
 <meta charset="UTF-8"/>
@@ -17,9 +6,7 @@
 <title>LAB héritage | Conserver la beauté </title>
 <meta name="description" content="LAB héritage — Giải pháp tổng thể phục dựng, phục chế di sản văn hoá, công trình kiến trúc, resort, villa, du thuyền và thời trang cao cấp."/>
 
-<!-- ═══ FAVICON & LOGO ═══
-     Đặt file logo.png vào thư mục images/
-     Ưu tiên PNG cho favicon; SVG dùng làm logo navbar -->
+<!-- ═══ FAVICON & LOGO ═══ -->
 <link rel="icon" href="images/logo1.png" type="image/png"/>
 <link rel="icon" href="images/logo.svg" type="image/svg+xml"/>
 <link rel="icon" href="images/favicon.ico" sizes="any"/>
@@ -34,11 +21,8 @@
 
 <!-- ═══════════════════════════════════════════════════════════
      NAVBAR
-     Logo: images/logo.png (PNG) + text fallback
-     Ngôn ngữ: nút VI/EN được inject bởi js/enhance.js
      ═══════════════════════════════════════════════════════════ -->
 <nav id="nav">
-  <!-- LOGO — thay logo.png bằng file thực tế của bạn -->
   <a href="#" class="nav-logo">
     <img src="images/logo.svg"
          alt="LAB héritage logo"
@@ -49,7 +33,6 @@
     </div>
   </a>
 
-  <!-- Desktop nav links — text được dịch qua js/enhance.js -->
   <ul class="nav-links" id="nav-links">
     <li><a href="#about"    data-vi="Về Chúng Tôi" data-en="About Us">Về Chúng Tôi</a></li>
     <li><a href="#services" data-vi="Dịch Vụ"      data-en="Services">Dịch Vụ</a></li>
@@ -61,11 +44,9 @@
 
   <a href="#contact" class="nav-cta" data-vi="Đặt Lịch Khảo Sát" data-en="Book Inspection">Đặt Lịch Khảo Sát</a>
 
-  <!-- Hamburger mobile menu -->
   <button class="hamburger" id="ham" aria-label="Menu">
     <span></span><span></span><span></span>
   </button>
-  <!-- Nút VI/EN được inject bởi enhance.js ngay trước nút hamburger -->
 </nav>
 
 <!-- Mobile nav overlay -->
@@ -78,11 +59,10 @@
   <a href="#contact"  data-vi="Liên Hệ"       data-en="Contact">Liên Hệ</a>
   <a href="#contact" class="btn-primary" style="margin-top:12px"
      data-vi="Đặt Lịch Khảo Sát" data-en="Book Inspection">Đặt Lịch Khảo Sát</a>
-  <!-- Nút VI/EN mobile được inject bởi enhance.js -->
 </div>
 
 <!-- ═══════════════════════════════════════════════════════════
-     HERO — nội dung render từ DATA.hero trong content.js
+     HERO
      ═══════════════════════════════════════════════════════════ -->
 <section class="hero" id="hero" style="padding:0"></section>
 
@@ -92,13 +72,12 @@
 <section class="ba-section" id="ba-section" style="padding-top:100px;padding-bottom:100px"></section>
 
 <!-- ═══════════════════════════════════════════════════════════
-     VỀ CHÚNG TÔI — render từ DATA.about
+     VỀ CHÚNG TÔI
      ═══════════════════════════════════════════════════════════ -->
-<!-- <section class="about-section" id="about-section" id="about"></section> -->
 <section class="about-section" id="about"></section>
 
 <!-- ═══════════════════════════════════════════════════════════
-     DỊCH VỤ — heading tĩnh, cards render từ DATA.services
+     DỊCH VỤ
      ═══════════════════════════════════════════════════════════ -->
 <section class="services-section" id="services">
   <div class="svc-hd reveal">
@@ -115,7 +94,7 @@
 </section>
 
 <!-- ═══════════════════════════════════════════════════════════
-     QUY TRÌNH — heading tĩnh, steps render từ DATA.process
+     QUY TRÌNH
      ═══════════════════════════════════════════════════════════ -->
 <section class="process-section" id="process">
   <div class="proc-hd reveal">
@@ -132,7 +111,7 @@
 </section>
 
 <!-- ═══════════════════════════════════════════════════════════
-     DỰ ÁN TIÊU BIỂU — heading + filters tĩnh, cards động
+     DỰ ÁN TIÊU BIỂU
      ═══════════════════════════════════════════════════════════ -->
 <section class="projects-section" id="projects">
   <div class="proj-hd reveal">
@@ -150,7 +129,6 @@
        data-vi="Tư Vấn Dự Án →" data-en="Project Consultation →">Tư Vấn Dự Án →</a>
   </div>
 
-  <!-- Filter buttons — data-filter dùng cho song ngữ, data-f dùng cho filter logic -->
   <div class="proj-filters reveal">
     <button class="pf on" data-f="all"          data-filter="all"          data-vi="Tất Cả"        data-en="All">Tất Cả</button>
     <button class="pf"    data-f="di-san"        data-filter="di-san"        data-vi="Di Sản"        data-en="Heritage">Di Sản</button>
@@ -162,17 +140,15 @@
 </section>
 
 <!-- ═══════════════════════════════════════════════════════════
-     MINH CHỨNG: ALMA F.R.C. — render từ DATA.proof
+     MINH CHỨNG: ALMA F.R.C.
      ═══════════════════════════════════════════════════════════ -->
 <section class="proof-section" id="proof-section"></section>
 
 <!-- ═══════════════════════════════════════════════════════════
      CÂU CHUYỆN MINH CHỨNG: KEIM & NHÀ TRẮNG
-     Tất cả text song ngữ qua data-vi / data-en
      ═══════════════════════════════════════════════════════════ -->
      <section class="whitehouse-section" id="whitehouse">
       <div class="wh-inner">
-        <!-- Cột trái: hình ảnh + badge -->
         <div class="wh-visual reveal">
           <div class="wh-img-wrap">
             <div class="wh-img-ph">
@@ -192,7 +168,6 @@
           </div>
         </div>
     
-        <!-- Cột phải: nội dung câu chuyện -->
         <div class="wh-content reveal delay1">
           <div class="label" style="margin-bottom:20px">
             <span data-vi="Câu Chuyện Minh Chứng" data-en="Proof Story">Câu Chuyện Minh Chứng</span>
@@ -273,6 +248,7 @@
         </div>
       </div>
     </section>
+
 <!-- ═══════════════════════════════════════════════════════════
      ĐỐI TÁC & KHÁCH HÀNG
      ═══════════════════════════════════════════════════════════ -->
@@ -325,10 +301,9 @@
     </div>
   </div>
 </section>
+
 <!-- ═══════════════════════════════════════════════════════════
      SỬ DỤNG SẢN PHẨM / PRODUCTS IN USE
-     Nội dung render từ DATA.brands trong content.js
-     Section heading tĩnh, cards động qua renderBrandSection()
      ═══════════════════════════════════════════════════════════ -->
      <section class="brand-section" id="brand-section">
       <div class="brand-section-hd reveal">
@@ -345,7 +320,6 @@
           Mọi dự án đều sử dụng 100% vật liệu và công nghệ có nguồn gốc Châu Âu chính hãng — cam kết chất lượng, bền vững và an toàn.
         </p>
       </div>
-      <!-- Cards render bởi renderBrandSection() trong app.js -->
       <div id="brand-section-grid" class="brand-section-grid"></div>
     </section>
 
@@ -368,7 +342,7 @@
 
 
 <!-- ═══════════════════════════════════════════════════════════
-     LIÊN HỆ — render từ DATA.company + form
+     LIÊN HỆ
      ═══════════════════════════════════════════════════════════ -->
 <section class="contact-section" id="contact">
   <div id="contact-info" class="reveal"></div>
@@ -376,14 +350,14 @@
 </section>
 
 <!-- ═══════════════════════════════════════════════════════════
-     FOOTER — render từ DATA.company
+     FOOTER
      ═══════════════════════════════════════════════════════════ -->
 <footer>
   <div class="ft-inner" id="ft-inner"></div>
 </footer>
 
 <!-- ═══════════════════════════════════════════════════════════
-     NÚT GỌI ĐIỆN THOẠI — 
+     NÚT GỌI ĐIỆN THOẠI
      ═══════════════════════════════════════════════════════════ -->
 <a href="tel:+84862043042" class="call-btn"
    title="Gọi ngay — Thiên Tú">
@@ -396,7 +370,7 @@
 </a>
 
 <!-- ═══════════════════════════════════════════════════════════
-     ZALO BUTTON — cố định góc phải (dưới nút gọi)
+     ZALO BUTTON
      ═══════════════════════════════════════════════════════════ -->
      <a href="#" class="zalo-btn" target="_blank" title="Chat Zalo với LAB héritage">
       <div class="z-tip"
@@ -407,8 +381,6 @@
 
 <!-- ═══════════════════════════════════════════════════════════
      EMAILJS SDK
-     ⚙️ Thay YOUR_PUBLIC_KEY bằng Public Key từ emailjs.com
-     Hướng dẫn chi tiết trong file js/app.js
      ═══════════════════════════════════════════════════════════ -->
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script>
@@ -419,9 +391,6 @@
   })();
 </script>
 
-
-
-<!-- Scripts: content → app → enhance (thứ tự quan trọng) -->
 <script src="data/content.js"></script>
 <script src="js/app.js"></script>
 <script src="js/enhance.js"></script>
